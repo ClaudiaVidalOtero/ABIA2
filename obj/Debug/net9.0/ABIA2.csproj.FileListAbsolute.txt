@@ -1,0 +1,15 @@
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\bin\Debug\net9.0\ABIA2.exe
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\bin\Debug\net9.0\ABIA2.deps.json
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\bin\Debug\net9.0\ABIA2.runtimeconfig.json
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\bin\Debug\net9.0\ABIA2.dll
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\bin\Debug\net9.0\ABIA2.pdb
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ABIA2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ABIA2.AssemblyInfoInputs.cache
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ABIA2.AssemblyInfo.cs
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ABIA2.csproj.CoreCompileInputs.cache
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ABIA2.sourcelink.json
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ABIA2.dll
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\refint\ABIA2.dll
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ABIA2.pdb
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ABIA2.genruntimeconfig.cache
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\obj\Debug\net9.0\ref\ABIA2.dll

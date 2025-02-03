@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+// --------------------------------------
+//             EJERCICIO 1
+//---------------------------------------
+/*
 class Program
 {
     static Dictionary<string, List<double>> estudiantes = new Dictionary<string, List<double>>();
@@ -161,5 +165,101 @@ class Program
             }
         }
         Console.WriteLine("Datos guardados correctamente.");
+    }
+}
+
+*/
+
+// --------------------------------------
+//             EJERCICIO 2
+//---------------------------------------
+using System;
+using System.Collections.Generic;
+
+class Bolsa
+{
+    private List<string> bolas;
+    private Random random;
+
+    public Bolsa()
+    {
+        bolas = new List<string> { "azul", "roja", "verde" };
+        random = new Random();
+    }
+
+    public string RetirarBola()
+    {
+        if (bolas.Count == 0)
+            return "No quedan bolas";
+
+        int index = random.Next(bolas.Count);
+        string bolaSeleccionada = bolas[index];
+        bolas.RemoveAt(index);
+        return bolaSeleccionada;
+    }
+
+    public List<string> ObtenerBolas()
+    {
+        return new List<string>(bolas);
+    }
+}
+
+class Perro
+{
+    public string ColorPelo { get; private set; }
+    public double Altura { get; private set; }
+    public double Peso { get; private set; }
+    public Bolsa BolsaDeBolas { get; private set; }
+
+    public Perro(string colorPelo, double altura, double peso, Bolsa bolsa)
+    {
+        ColorPelo = colorPelo;
+        Altura = altura;
+        Peso = peso;
+        BolsaDeBolas = bolsa;
+    }
+
+    public string ComerBola()
+    {
+        return BolsaDeBolas.RetirarBola();
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Bolsa bolsaCompartida = new Bolsa();
+
+        Console.Write("Ingrese el color del perro: ");
+        string color = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(color)) color = "rojo";
+        
+        Console.Write("Ingrese la altura del perro: ");
+        string alturaInput = Console.ReadLine();
+        double altura = string.IsNullOrWhiteSpace(alturaInput) ? 20 : double.Parse(alturaInput);
+        
+        Console.Write("Ingrese el peso del perro: ");
+        string pesoInput = Console.ReadLine();
+        double peso = string.IsNullOrWhiteSpace(pesoInput) ? 1.8 : double.Parse(pesoInput);
+        
+        Perro perroOriginal = new Perro(color, altura, peso, bolsaCompartida);
+        
+        Console.Write("¿Cuántas veces quieres clonar el perro? ");
+        if (int.TryParse(Console.ReadLine(), out int cantidadClones) && cantidadClones > 0)
+        {
+            Console.WriteLine($"Color: {perroOriginal.ColorPelo} Altura: {perroOriginal.Altura} Peso: {perroOriginal.Peso} Bolsa: {string.Join(" ", bolsaCompartida.ObtenerBolas())}");
+            
+            for (int i = 1; i <= cantidadClones; i++)
+            {
+                Perro clon = new Perro(perroOriginal.ColorPelo, perroOriginal.Altura, perroOriginal.Peso, bolsaCompartida);
+                string bolaComida = clon.ComerBola();
+                Console.WriteLine($"Color: {clon.ColorPelo} Altura: {clon.Altura} Peso: {clon.Peso} Bolsa: {string.Join(" ", bolsaCompartida.ObtenerBolas())}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Entrada inválida. Debe ingresar un número entero positivo.");
+        }
     }
 }
