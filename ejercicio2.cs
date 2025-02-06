@@ -1,3 +1,5 @@
+// Claudia Vidal Otero claudia.votero@udc.es
+// Aldana Medina Lostaunau aldana.medina@udc.es
 using System;
 using System.Collections.Generic;
 
