@@ -40,10 +40,10 @@ namespace Ejercicio2
     
     class Perro
     {
-        public string ColorPelo { get; private set; }       // Variable para el color del pelo 
-        public double Altura { get; private set; }          // Variable para la altura
-        public double Peso { get; private set; }            // Variable para el peso
-        public Bolsa BolsaDeBolas { get; private set; }     // Variable para la bolsa de bolas del perro
+        public string ColorPelo { get; private set; }       // Propiedad para el color del pelo 
+        public double Altura { get; private set; }          // Propiedad para la altura
+        public double Peso { get; private set; }            // Propiedad para el peso
+        public Bolsa BolsaDeBolas { get; private set; }     // Propiedad para la bolsa de bolas del perro
 
         // Constructor de la clase Perro, inicializa sus atributos
         public Perro(string colorPelo, double altura, double peso, Bolsa bolsa)
