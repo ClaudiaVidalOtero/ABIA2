@@ -72,6 +72,9 @@ namespace Ejercicio2
             string color = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(color)) color = "rojo"; // Si no ingresa nada, el color por defecto es rojo
             
+
+            // Si el usuario no ingresa datos para el perro, 
+            //el perro será por defecto rojo, de altura 20 y de peso 1.8.
             // Se solicita la altura del perro
             Console.Write("Ingrese la altura del perro: ");
             string alturaInput = Console.ReadLine();
