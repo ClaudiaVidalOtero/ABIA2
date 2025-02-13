@@ -2,8 +2,8 @@
 
 | Correo | Nombre y Apellidos | 
 | --- | --- |
-| aldana.medina@udc.es | Aldana Smyna Medina Lostaunau |
-| claudia.votero@udc.es | Claudia Vidal Otero |
+| alumno1 | Juán Fernández García |
+| alumno2 | María Díaz Martínez |
 
 ## Problema: N - Reinas
 
