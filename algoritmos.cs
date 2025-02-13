@@ -3,17 +3,23 @@
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 import heapq
-
+using System;
 
 REMOVED = '<removed-task>'  # placeholder for a removed task
 
+//EN C #
+class Solucion
+{
+    private List<string> Coords;
+    private int Coste;
 
-class Solucion:
-
-    def __init__(self, coords, coste=0):
-        self.coords = coords
-        self.coste = coste
-
+    public Solucion(List<string> coords, int coste)
+    {
+        Coords = coords;
+        Coste = coste; 
+    }
+    
+// HASTA AQUI, NI IDEA DE COMO PASAR ESTAS
     def __eq__(self, other):
         return str(self.coords) == str(other.coords)
 
@@ -23,13 +29,19 @@ class Solucion:
     def __str__(self):
         return '-'.join(str(x) for x in self.coords)
 
+}
 
 
-class AlgoritmoDeBusqueda:
+class AlgoritmoDeBusqueda
+{
+    private ListaCandidatos Lista;  // NO VA PQ HAY QUE HACER UN NAMESPACE PARA PODER LLAMAR A LISTA DE CANDIDATOS
 
-    def __init__(self, lista=ListaCandidatos):
-        self.lista = lista
+    public AlgoritmoDeBusqueda(lista)
+    {
+        Lista = lista;
+    }
 
+    // ESTAS FUNCIONES NO LAS SÉ PASAR A C#
     def calculo_de_prioridad(self, nodo_info, calculo_heuristica=None):
         return 0
 
@@ -58,12 +70,16 @@ class AlgoritmoDeBusqueda:
             return None
         return solucion, revisados
 
+}
 
-class AEstrella(AlgoritmoDeBusqueda):
+// ESTO ESTÁ EN C#
+class AEstrella:AlgoritmoDeBusqueda
+{
+    public AEstrella() : base() {}
 
-    def __init__(self):
-        super(AEstrella, self).__init__(ColaDePrioridad)
-
+    //ESTO NO ESTÁ EN C#
     def calculo_de_prioridad(self, solucion, calculo_heuristica=None):
         return solucion.coste + calculo_heuristica(solucion)
+}
+
 
