@@ -84,10 +84,12 @@ namespace Algoritmos
         public AEstrella(ListaCandidatos lista) : base(lista) {}
 
         // Método que calcula la prioridad usando la función externa
-        public int calculo_de_prioridad(Solucion solucion)
+        public int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>)
         {
             return solucion.Coste + calculo_heuristica(solucion);
         }
+
+
     }
 
 }

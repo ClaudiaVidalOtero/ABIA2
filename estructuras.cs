@@ -40,8 +40,8 @@ namespace Estructuras
 
     public class ListaCandidatos
     {
-        public virtual void anhadir(Solucion solucion, int prioridad = 0) { }
-        public virtual void borrar(Solucion solucion) { }
+        public virtual void anhadir(Solucion solucion, int prioridad = 0) {throw new NotImplementedException(); }
+        public virtual void borrar(Solucion solucion) {throw new NotImplementedException(); }
         public virtual Solucion obtener_siguiente() { throw new NotImplementedException(); }
         public virtual int __len__ => 0;
     }
