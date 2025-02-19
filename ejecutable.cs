@@ -9,10 +9,9 @@ namespace Ejecutable
     {
         static void Main()
         {
-            int reinas = 6;
-            //comprobadas
-
-            ListaCandidatos lista = new ListaCandidatos();
+            int reinas = 5;
+            
+            ListaCandidatos lista = new ColaDePrioridad();
 
             /// Solución inicial vacía
             List<(int, int)> solucion_inicial = new List<(int, int)>();

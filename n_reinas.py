@@ -117,7 +117,7 @@ class AEstrella(AlgoritmoDeBusqueda):
 
 if __name__ == '__main__':
     solucion_inicial = []
-    reinas = 6
+    reinas = 5
 
     def calculo_coste(solucion, nueva_solucion):
         return 1
