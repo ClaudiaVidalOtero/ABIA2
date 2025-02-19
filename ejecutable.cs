@@ -1,99 +1,84 @@
-partial class Program
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Estructuras;
+using Algoritmos;
+
+namespace Ejecutable
 {
-    static void Main()
+    class Program
     {
-        int reinas = 6;
-
-         
-        public int calculo_coste(Solucion solucion, Solucion nueva_solucion)
+        static void Main(string[] args)
         {
-            return 1;
-        }
-        public int calculo_heuristica(Solucion solucion)
-        {
-            return 0;
-        }
+            int reinas = 6;
 
-        public List<(int, int)> obtener_vecinos(Solucion solucion, int reinas)
-        {
-            int row = solucion.Coords.Count == 0 ? -1 : solucion.Coords.Last().Item1;
-
-            List<(int, int)> vecinos = new();
-
-            if (row + 1 < reinas)
+            // Función para calcular el coste entre soluciones
+            int calculoCoste(Solucion sol1, Solucion sol2)
             {
-                for (int j = 0; j < reinas; j++)
-                    vecinos.Add((row + 1, j));
+                return 1;
             }
-            return vecinos;
-        }
 
-        public  bool criterio_parada(Solucion solucion, int reinas)
-        {
-            if (solucion.Coords.Count < reinas) return false;
-            for (int i = 0; i < solucion.Coords.Count; i++)
+            // Función heurística (aquí simplemente retorna 0)
+            int calculoHeuristica(Solucion sol)
             {
-                (int fila_i, int columna_i) nodo_i = solucion.Coords[i];
-                for (int j = i + 1; j < solucion.Coords.Count; j++)
+                return 0;
+            }
+
+            // Función que devuelve los vecinos de una solución
+            List<(int, int)> obtenerVecinos(Solucion sol)
+            {
+                int row = sol.Coords.Count == 0 ? -1 : sol.Coords.Last().Item1;
+                List<(int, int)> vecinos = new List<(int, int)>();
+
+                if (row + 1 < reinas)
                 {
-                    (int fila_j, int columna_j) nodo_j = solucion.Coords[j];
-                    if (nodo_j.Item2 == nodo_i.Item2 || Math.Abs(nodo_j.Item2 - nodo_i.Item2) == Math.Abs(j - i))
-                        return false;
+                    for (int j = 0; j < reinas; j++)
+                    {
+                        vecinos.Add((row + 1, j));
+                    }
                 }
+                return vecinos;
             }
-            return true;
-        }
-    
 
-        AEstrella astar = new AEstrella();
-        var result = astar.Search(new List<(int, int)>(), criterio_parada, obtener_vecinos, calculo_coste, calculo_heuristica);
-        if (result.HasValue)
-        {
-            Console.WriteLine("Coordinates: " + string.Join(", ", result.Value.solution.Coords));
-            Console.WriteLine("Nodes Evaluated: " + result.Value.nodesEvaluated);
-        }
-        else
-        {
-            Console.WriteLine("No solution found.");
+            // Criterio de parada: se considera solución válida si se han colocado todas las reinas y no se atacan
+            bool criterioParada(Solucion sol)
+            {
+                if (sol.Coords.Count < reinas) return false;
+                for (int i = 0; i < sol.Coords.Count; i++)
+                {
+                    for (int j = i + 1; j < sol.Coords.Count; j++)
+                    {
+                        if (sol.Coords[i].Item2 == sol.Coords[j].Item2 ||
+                            Math.Abs(sol.Coords[i].Item2 - sol.Coords[j].Item2) == Math.Abs(i - j))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            // Creamos la estructura de candidatos (Cola de Prioridad)
+            ColaDePrioridad cola = new ColaDePrioridad();
+
+            // Instanciamos el algoritmo A* pasando la cola de prioridad
+            AEstrella astar = new AEstrella(cola);
+
+            // Solución inicial vacía
+            Solucion inicial = new Solucion(new List<(int, int)>(), 0);
+
+            // Realizamos la búsqueda
+            var resultado = astar.Buscar(inicial, criterioParada, obtenerVecinos, calculoCoste, calculoHeuristica);
+
+            if (resultado != null)
+            {
+                Console.WriteLine("Solución encontrada: " + resultado.Value.Item1);
+                Console.WriteLine("Nodos evaluados: " + resultado.Value.Item2);
+            }
+            else
+            {
+                Console.WriteLine("No se encontró solución.");
+            }
         }
     }
 }
-
-
-
-
-
-
-if __name__ == '__main__':
-    solucion_inicial = []
-    reinas = 6
-
-
-    def obtener_vecinos(solucion):
-        if len(solucion.coords) == 0:
-            row = -1
-        else:
-            row, _ = solucion.coords[-1]
-        vecinos = []
-        if row + 1 < reinas:
-            for j in range(reinas):
-                vecinos.append((row + 1, j))
-        return vecinos
-
-    def criterio_parada(solucion):
-        if len(solucion.coords) < reinas:
-            return False
-        for i in range(len(solucion.coords)):
-            nodo_i = solucion.coords[i]
-            for j  in range(i+1, len(solucion.coords)):
-                nodo_j = solucion.coords[j]
-                if nodo_j[-1] == nodo_i[-1] or abs(nodo_j[-1] - nodo_i[-1]) == abs(j - i):
-                    return False
-        return True
-
-    astar = AEstrella()
-    solucion, revisados = astar.busqueda(solucion_inicial, criterio_parada, obtener_vecinos, calculo_coste, calculo_heuristica)
-    print('Coordenadas:', solucion.coords)
-    print('Nodos evaluadas:', revisados)
-
-

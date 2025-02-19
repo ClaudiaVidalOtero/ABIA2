@@ -1,118 +1,91 @@
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Estructuras;
+using Ejecutable;
 
-//REMOVED = '<removed-task>'  // placeholder for a removed task
-
-
-// ESTA ESTÁ BIEN 
-class Solucion
+namespace Algoritmos
 {
-    public List<(int, int)> Coords { get; private set; }
-    public int Coste { get; set; }
 
-    public Solucion(List<(int, int)> coords, int coste)
+    public class AlgoritmoDeBusqueda
     {
-        Coords = coords;
-        Coste = coste;
-    }
+        public ListaCandidatos ListaCandidatos { get; set; }
 
-    // Python equivalente __eq__
-    public bool __eq__(Solucion otra)
-    {
-        if (otra == null) return false;
-        return string.Join("-", Coords) == string.Join("-", otra.Coords);
-    }
-
-    // Python equivalente __lt__ 
-    public int __lt__(Solucion otra)
-    {
-        if (otra == null) return 1;  // Si el otro objeto es null, este objeto es mayor
-        return Coste < otra.Coste ? -1 : (Coste > otra.Coste ? 1 : 0);
-    }
-
-    // Python equivalente __str__
-    public string __str__()
-    {
-        return string.Join("-", Coords);
-    }
-}
-
-
-// SIN ACABAR
-class AlgoritmoDeBusqueda
-{
-    public required ListaCandidatos listaCandidatos;
-
-    public AlgoritmoDeBusqueda(ListaCandidatos lista)     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! get p set
-    {
-        listaCandidatos = lista;
-    }
-
-    public int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculoHeuristica = null)
-    {
-        return 0; 
-    }
-
-    public (Solucion, int)? Busqueda(Solucion solucionInicial, Func<Solucion, bool> criterioParada, 
-                                      Func<Solucion, List<string>> obtenerVecinos, 
-                                      Func<Solucion, Solucion, int> calculoCoste, 
-                                      Func<Solucion, int>? calculoHeuristica = null) // Aquí cambiamos a Func<Solucion, int>?
-    {
-        var candidatos = listaCandidatos; 
-        candidatos.anhadir(new Solucion(solucionInicial.Coords, 0)); 
-
-        var vistos = new Dictionary<string, int>();
-        bool finalizado = false;
-        int revisados = 0;
-
-        while (candidatos.__len__ > 0 && !finalizado)
+        public AlgoritmoDeBusqueda(ListaCandidatos lista)
         {
-            var solucion = candidatos.obtener_siguiente();  
-            vistos[string.Join("-", solucion.Coords)] = solucion.Coste;
-            revisados++;
+            ListaCandidatos = lista;
+        }
 
-            if (criterioParada(solucion))
+        // Calcula la prioridad; si se proporciona una función heurística, se usa
+        public virtual int CalcularPrioridad(Solucion solucion, Func<Solucion, int>? calculoHeuristica = null)
+        {
+            if (calculoHeuristica != null)
+                return solucion.Coste + calculoHeuristica(solucion);
+            return solucion.Coste;
+        }
+
+        // Método de búsqueda
+        public (Solucion, int)? Buscar(
+            Solucion solucionInicial,
+            Func<Solucion, bool> criterioParada,
+            Func<Solucion, List<(int, int)>> obtenerVecinos,
+            Func<Solucion, Solucion, int> calculoCoste,
+            Func<Solucion, int>? calculoHeuristica = null)
+        {
+            ListaCandidatos.anhadir(new Solucion(solucionInicial.Coords, 0));
+
+            Dictionary<string, int> vistos = new Dictionary<string, int>();
+            int nodosEvaluados = 0;
+            Solucion? solucionActual = null;
+            bool encontrado = false;
+
+            while (ListaCandidatos.__len__ > 0 && !encontrado)
             {
-                finalizado = true;
-                break;
-            }
+                solucionActual = ListaCandidatos.obtener_siguiente();
+                vistos[solucionActual.ToString()] = solucionActual.Coste;
+                nodosEvaluados++;
 
-            var vecinos = obtener_vecinos(solucion);
-            foreach (var vecino in vecinos)
-            {
-                var nuevaSolucion = new Solucion(coords: solucion.Coords.Concat(new[] { vecino }).ToList());
-
-                if (!vistos.ContainsKey(string.Join("-", nuevaSolucion.Coords)))
+                if (criterioParada(solucionActual))
                 {
-                    nuevaSolucion.Coste = solucion.Coste + calculo_coste(solucion, nuevaSolucion);
-                    candidatos.anhadir(nuevaSolucion, calculo_de_prioridad(nuevaSolucion, calculoHeuristica));
+                    encontrado = true;
+                    break;
+                }
+
+                List<(int, int)> vecinos = obtenerVecinos(solucionActual);
+                foreach ((int, int) vecino in vecinos)
+                {
+                    // Crear una copia de las coordenadas y agregar el vecino
+                    List<(int, int)> nuevasCoords = solucionActual.Coords.ToList();
+                    nuevasCoords.Add(vecino);
+                    Solucion nueva_solucion = new Solucion(nuevasCoords, 0);
+
+                    if (!vistos.ContainsKey(nueva_solucion.ToString()))
+                    {
+                        nueva_solucion.Coste = solucionActual.Coste + calculoCoste(solucionActual, nueva_solucion);
+                        int prioridad = CalcularPrioridad(nueva_solucion, calculoHeuristica);
+                        ListaCandidatos.anhadir(nueva_solucion, prioridad);
+                    }
                 }
             }
-        }
 
-        if (!finalizado)
-        {
-            return null;
-        }
+            if (!encontrado)
+                return null;
 
-        return (solucion, revisados);
+            return (solucionActual!, nodosEvaluados);
+        }
     }
-}
 
-
-
-// ESTA ESTÁ BIEN
-class AEstrella : AlgoritmoDeBusqueda
-{
-    public AEstrella(): base() {}
-
-    // Método que calcula la prioridad usando la función externa
-    public int calculo_de_prioridad(Solucion solucion)
+    public class AEstrella : AlgoritmoDeBusqueda
     {
-        return solucion.Coste + calculo_heuristica(solucion);
+        public AEstrella(ListaCandidatos lista) : base(lista) { }
+
+        // Se puede sobrescribir el cálculo de prioridad si se desea
+        public override int CalcularPrioridad(Solucion solucion, Func<Solucion, int>? calculoHeuristica = null)
+        {
+            if (calculoHeuristica != null)
+                return solucion.Coste + calculoHeuristica(solucion);
+            return solucion.Coste;
+        }
     }
 }
-
-
-
-
