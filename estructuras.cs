@@ -42,7 +42,7 @@ namespace Estructuras
     {
         public virtual void anhadir(Solucion solucion, int prioridad = 0) {}
         public virtual void borrar(Solucion solucion) {}
-        public virtual Solucion? Obtener_siguiente() { return null; }
+        public virtual Solucion? obtener_siguiente() {throw new NotImplementedException();}
         public virtual int __len__ => 0;
     }
 
@@ -89,7 +89,7 @@ namespace Estructuras
         }
 
    
-        public override Solucion Obtener_siguiente()
+        public override Solucion obtener_siguiente()
         {
             while (cp.Count > 0)
             {
