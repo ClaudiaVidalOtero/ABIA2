@@ -4,11 +4,10 @@ using System.Linq;
 using Ejecutable;
 using Algoritmos;
 
-//REMOVED = '<removed-task>'  // placeholder for a removed task
 
 namespace Estructuras
 {
-
+    //comprobada
     public class Solucion
     {
         public List<(int, int)> Coords { get; private set; }
@@ -38,21 +37,21 @@ namespace Estructuras
         }
     }
 
+    //comprobada
     public class ListaCandidatos
     {
-        public virtual void anhadir(Solucion solucion, int prioridad = 0) {throw new NotImplementedException(); }
-        public virtual void borrar(Solucion solucion) {throw new NotImplementedException(); }
-        public virtual Solucion obtener_siguiente() { throw new NotImplementedException(); }
+        public virtual void anhadir(Solucion solucion, int prioridad = 0) {}
+        public virtual void borrar(Solucion solucion) {}
+        public virtual Solucion? Obtener_siguiente() { return null; }
         public virtual int __len__ => 0;
     }
 
-
-    // HECHA EN C# NECESITA ARREGLOS
+    // comprobada
     public class ColaDePrioridad : ListaCandidatos
     {
         private readonly List<(int prioridad, Solucion solucion)> cp;
         private readonly Dictionary<string, (int prioridad, Solucion solucion)> buscador;
-        private const int REMOVED = -1;                             ////////// en teoría tiene que se REMOVED = '<removed-task>' no -1
+        private const int REMOVED = -1;                       // en teoría tiene que ser REMOVED = '<removed-task>' no -1, pero daba problemas pq cost solo acepta int
 
         public ColaDePrioridad()
         {
@@ -61,7 +60,7 @@ namespace Estructuras
         }
         public override void anhadir(Solucion solucion, int prioridad = 0)
         {
-            string str_solucion = solucion.__str__();
+            string str_solucion = solucion.__str__();           //mira si funciona si no por tostring
             if (buscador.ContainsKey(str_solucion))
             {
                 (int prioridad, Solucion solucion) solucionBuscador = buscador[str_solucion];
@@ -72,7 +71,7 @@ namespace Estructuras
             (int prioridad, Solucion solucion) entrada = (prioridad, solucion);
             buscador[str_solucion] = entrada;
             cp.Add(entrada);
-            cp.Sort((a, b) => a.prioridad.CompareTo(b.prioridad));              //// HEAPP?????????????????????????? REVISAR
+            cp.Sort((a, b) => a.prioridad.CompareTo(b.prioridad));              
         }
         
 
@@ -82,19 +81,19 @@ namespace Estructuras
             
             if (buscador.ContainsKey(str_solucion))
             {
-                var entrada = buscador[str_solucion];
+                (int prioridad, Solucion solucion) entrada = buscador[str_solucion];
                 buscador.Remove(str_solucion);  
 
-                entrada.Item2.Coste = REMOVED;                          // MIRAR COMO HACER CON LO DE -1 O PLACEHOLDER 
+                entrada.Item2.Coste = REMOVED;                           
             }
         }
 
-
-        public override Solucion obtener_siguiente()
+   
+        public override Solucion Obtener_siguiente()
         {
             while (cp.Count > 0)
             {
-                (int prioridad, Solucion solucion) = cp[0];             /// IGUAL ES MEJOR USAR DEQUEUE, PARA FUNCIONALIDAD MAS SIMILAR A PYTHON
+                (int prioridad, Solucion solucion) = cp[0];            
                 cp.RemoveAt(0);
                 if (solucion.Coste != REMOVED)
                 {

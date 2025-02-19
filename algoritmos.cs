@@ -7,12 +7,12 @@ using Ejecutable;
 
 namespace Algoritmos
 {
-
+    //comprobada
     class AlgoritmoDeBusqueda
     {
-        public required ListaCandidatos listaCandidatos;
+        public  ListaCandidatos listaCandidatos;
 
-        public AlgoritmoDeBusqueda(ListaCandidatos lista)     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! get p set
+        public AlgoritmoDeBusqueda(ListaCandidatos lista)     
         {
             listaCandidatos = lista;
         }
@@ -22,7 +22,8 @@ namespace Algoritmos
             return 0; 
         }
 
-        public (Solucion, int)? Busqueda(
+    
+        public virtual (Solucion, int)? busqueda(
             Solucion solucion_inicial,
             Func<Solucion, bool> criterio_parada,
             Func<Solucion, List<(int, int)>> obtener_vecinos,
@@ -30,9 +31,9 @@ namespace Algoritmos
             Func<Solucion, int>? calculo_heuristica = null)
         {
             ListaCandidatos candidatos = listaCandidatos;
-            candidatos.anhadir(new Estructuras.Solucion(solucion_inicial.Coords, 0));               ///revisar si es col_ini.coords o solo sol_ini
+            candidatos.anhadir(new Solucion(solucion_inicial.Coords, 0));          
 
-            Dictionary<string, int> vistos = new Dictionary<string, int>();         //TIPOS CORRECTOS?
+            Dictionary<string, int> vistos = new Dictionary<string, int>();        
             bool finalizado = false;
             int revisados = 0;
             Solucion? solucion = null;  //  Declaro la variable fuera del bucle para poder usarla en el return
@@ -40,7 +41,7 @@ namespace Algoritmos
             while (candidatos.__len__ > 0 && !finalizado)
             {
                 solucion = candidatos.obtener_siguiente();
-                vistos[solucion.__str__()] = solucion.Coste;                        // MIRAR ESTO DE STR, EN PYTHON SE USA LA FUNCION EXISTENTE NO LA CREADA
+                vistos[solucion.__str__()] = solucion.Coste;                        
                 revisados++;
 
                 if (criterio_parada(solucion))
@@ -53,7 +54,7 @@ namespace Algoritmos
                 foreach ((int, int) vecino in vecinos)
                 {
                     List<(int, int)> nuevas_coordenadas = solucion.Coords.ToList();     // Se copia la lista
-                    nuevas_coordenadas.Add(vecino);                                     // Se modifica solo la copia    REVISAR ESTA LÓGICA
+                    nuevas_coordenadas.Add(vecino);                                     // Se modifica solo la copia    
 
                     Solucion nueva_solucion = new Solucion(nuevas_coordenadas, 0);
                 
@@ -65,8 +66,8 @@ namespace Algoritmos
                     }
                 }
             }
-
-            if (!finalizado)
+            
+            if (!finalizado || solucion == null)
             {
                 return null;
             }
@@ -78,15 +79,24 @@ namespace Algoritmos
         
     }
 
-    // ESTA ESTÁ BIEN
+    // comprobada
     class AEstrella : AlgoritmoDeBusqueda
     {
         public AEstrella(ListaCandidatos lista) : base(lista) {}
 
-        // Método que calcula la prioridad usando la función externa
-        public int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>)
+        public new int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculo_heuristica=null)
         {
-            return solucion.Coste + calculo_heuristica(solucion);
+            return solucion.Coste + (calculo_heuristica != null ? calculo_heuristica(solucion) : 0);
+        }
+
+        public override (Solucion, int)? busqueda(
+        Solucion solucion_inicial,
+        Func<Solucion, bool> criterio_parada,
+        Func<Solucion, List<(int, int)>> obtener_vecinos,
+        Func<Solucion, Solucion, int> calculo_coste,
+        Func<Solucion, int>? calculo_heuristica = null)
+        {
+            return base.busqueda(solucion_inicial, criterio_parada, obtener_vecinos, calculo_coste, calculo_heuristica);
         }
 
 
