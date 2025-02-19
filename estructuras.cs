@@ -46,18 +46,19 @@ namespace Estructuras
         public virtual int __len__ => 0;
     }
 
+
+    // HECHA EN C# NECESITA ARREGLOS
     public class ColaDePrioridad : ListaCandidatos
     {
         private readonly List<(int prioridad, Solucion solucion)> cp;
         private readonly Dictionary<string, (int prioridad, Solucion solucion)> buscador;
-        private const int REMOVED = -1;
+        private const int REMOVED = -1;                             ////////// en teoría tiene que se REMOVED = '<removed-task>' no -1
 
         public ColaDePrioridad()
         {
             cp = new List<(int prioridad, Solucion solucion)>();
             buscador = new Dictionary<string, (int prioridad, Solucion solucion)>();
         }
-
         public override void anhadir(Solucion solucion, int prioridad = 0)
         {
             string str_solucion = solucion.__str__();
@@ -71,25 +72,29 @@ namespace Estructuras
             (int prioridad, Solucion solucion) entrada = (prioridad, solucion);
             buscador[str_solucion] = entrada;
             cp.Add(entrada);
-            cp.Sort((a, b) => a.prioridad.CompareTo(b.prioridad));
+            cp.Sort((a, b) => a.prioridad.CompareTo(b.prioridad));              //// HEAPP?????????????????????????? REVISAR
         }
+        
 
         public override void borrar(Solucion solucion)
         {
             string str_solucion = solucion.__str__();
+            
             if (buscador.ContainsKey(str_solucion))
             {
                 var entrada = buscador[str_solucion];
-                buscador.Remove(str_solucion);
-                entrada.Item2.Coste = REMOVED;
+                buscador.Remove(str_solucion);  
+
+                entrada.Item2.Coste = REMOVED;                          // MIRAR COMO HACER CON LO DE -1 O PLACEHOLDER 
             }
         }
+
 
         public override Solucion obtener_siguiente()
         {
             while (cp.Count > 0)
             {
-                (int prioridad, Solucion solucion) = cp[0];
+                (int prioridad, Solucion solucion) = cp[0];             /// IGUAL ES MEJOR USAR DEQUEUE, PARA FUNCIONALIDAD MAS SIMILAR A PYTHON
                 cp.RemoveAt(0);
                 if (solucion.Coste != REMOVED)
                 {
@@ -101,4 +106,5 @@ namespace Estructuras
         }
         public override int __len__ => buscador.Count;
     }
+
 }

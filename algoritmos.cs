@@ -8,84 +8,86 @@ using Ejecutable;
 namespace Algoritmos
 {
 
-    public class AlgoritmoDeBusqueda
+    class AlgoritmoDeBusqueda
     {
-        public ListaCandidatos ListaCandidatos { get; set; }
+        public required ListaCandidatos listaCandidatos;
 
-        public AlgoritmoDeBusqueda(ListaCandidatos lista)
+        public AlgoritmoDeBusqueda(ListaCandidatos lista)     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! get p set
         {
-            ListaCandidatos = lista;
+            listaCandidatos = lista;
         }
 
-        // Calcula la prioridad; si se proporciona una función heurística, se usa
-        public virtual int CalcularPrioridad(Solucion solucion, Func<Solucion, int>? calculoHeuristica = null)
+        public int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculoHeuristica = null)
         {
-            if (calculoHeuristica != null)
-                return solucion.Coste + calculoHeuristica(solucion);
-            return solucion.Coste;
+            return 0; 
         }
 
-        // Método de búsqueda
-        public (Solucion, int)? Buscar(
-            Solucion solucionInicial,
-            Func<Solucion, bool> criterioParada,
-            Func<Solucion, List<(int, int)>> obtenerVecinos,
-            Func<Solucion, Solucion, int> calculoCoste,
-            Func<Solucion, int>? calculoHeuristica = null)
+        public (Solucion, int)? Busqueda(
+            Solucion solucion_inicial,
+            Func<Solucion, bool> criterio_parada,
+            Func<Solucion, List<(int, int)>> obtener_vecinos,
+            Func<Solucion, Solucion, int> calculo_coste,
+            Func<Solucion, int>? calculo_heuristica = null)
         {
-            ListaCandidatos.anhadir(new Solucion(solucionInicial.Coords, 0));
+            ListaCandidatos candidatos = listaCandidatos;
+            candidatos.anhadir(new Estructuras.Solucion(solucion_inicial.Coords, 0));               ///revisar si es col_ini.coords o solo sol_ini
 
-            Dictionary<string, int> vistos = new Dictionary<string, int>();
-            int nodosEvaluados = 0;
-            Solucion? solucionActual = null;
-            bool encontrado = false;
+            Dictionary<string, int> vistos = new Dictionary<string, int>();         //TIPOS CORRECTOS?
+            bool finalizado = false;
+            int revisados = 0;
+            Solucion? solucion = null;  //  Declaro la variable fuera del bucle para poder usarla en el return
 
-            while (ListaCandidatos.__len__ > 0 && !encontrado)
+            while (candidatos.__len__ > 0 && !finalizado)
             {
-                solucionActual = ListaCandidatos.obtener_siguiente();
-                vistos[solucionActual.ToString()] = solucionActual.Coste;
-                nodosEvaluados++;
+                solucion = candidatos.obtener_siguiente();
+                vistos[solucion.__str__()] = solucion.Coste;                        // MIRAR ESTO DE STR, EN PYTHON SE USA LA FUNCION EXISTENTE NO LA CREADA
+                revisados++;
 
-                if (criterioParada(solucionActual))
+                if (criterio_parada(solucion))
                 {
-                    encontrado = true;
+                    finalizado = true;
                     break;
                 }
 
-                List<(int, int)> vecinos = obtenerVecinos(solucionActual);
+                List<(int, int)> vecinos = obtener_vecinos(solucion);
                 foreach ((int, int) vecino in vecinos)
                 {
-                    // Crear una copia de las coordenadas y agregar el vecino
-                    List<(int, int)> nuevasCoords = solucionActual.Coords.ToList();
-                    nuevasCoords.Add(vecino);
-                    Solucion nueva_solucion = new Solucion(nuevasCoords, 0);
+                    List<(int, int)> nuevas_coordenadas = solucion.Coords.ToList();     // Se copia la lista
+                    nuevas_coordenadas.Add(vecino);                                     // Se modifica solo la copia    REVISAR ESTA LÓGICA
 
-                    if (!vistos.ContainsKey(nueva_solucion.ToString()))
+                    Solucion nueva_solucion = new Solucion(nuevas_coordenadas, 0);
+                
+                    if (!vistos.ContainsKey(nueva_solucion.__str__()))
                     {
-                        nueva_solucion.Coste = solucionActual.Coste + calculoCoste(solucionActual, nueva_solucion);
-                        int prioridad = CalcularPrioridad(nueva_solucion, calculoHeuristica);
-                        ListaCandidatos.anhadir(nueva_solucion, prioridad);
+                        nueva_solucion.Coste = solucion.Coste + calculo_coste(solucion, nueva_solucion);
+                        int prioridad = calculo_de_prioridad(nueva_solucion, calculo_heuristica);
+                        candidatos.anhadir(nueva_solucion, prioridad);
                     }
                 }
             }
 
-            if (!encontrado)
+            if (!finalizado)
+            {
                 return null;
+            }
 
-            return (solucionActual!, nodosEvaluados);
+            return (solucion!, revisados);
+            
         }
+
+        
     }
 
-    public class AEstrella : AlgoritmoDeBusqueda
+    // ESTA ESTÁ BIEN
+    class AEstrella : AlgoritmoDeBusqueda
     {
-        public AEstrella(ListaCandidatos lista) : base(lista) { }
+        public AEstrella(ListaCandidatos lista) : base(lista) {}
 
-        // Se puede sobrescribir el cálculo de prioridad si se desea
-        public override int CalcularPrioridad(Solucion solucion, Func<Solucion, int>? calculoHeuristica = null)
+        // Método que calcula la prioridad usando la función externa
+        public int calculo_de_prioridad(Solucion solucion)
         {
-            if (calculoHeuristica != null)
-                return solucion.Coste + calculoHeuristica(solucion);
-            return solucion.Coste;
+            return solucion.Coste + calculo_heuristica(solucion);
         }
     }
+
 }
