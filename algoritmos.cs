@@ -1,85 +1,118 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-import heapq
 using System;
+using System.Collections.Generic;
 
-REMOVED = '<removed-task>'  # placeholder for a removed task
+//REMOVED = '<removed-task>'  // placeholder for a removed task
 
-//EN C #
+
+// ESTA ESTÁ BIEN 
 class Solucion
 {
-    private List<string> Coords;
-    private int Coste;
+    public List<(int, int)> Coords { get; private set; }
+    public int Coste { get; set; }
 
-    public Solucion(List<string> coords, int coste)
+    public Solucion(List<(int, int)> coords, int coste)
     {
         Coords = coords;
-        Coste = coste; 
+        Coste = coste;
     }
-    
-// HASTA AQUI, NI IDEA DE COMO PASAR ESTAS
-    def __eq__(self, other):
-        return str(self.coords) == str(other.coords)
 
-    def __lt__(self, other):
-        return str(self.coste) < str(other.coste)
+    // Python equivalente __eq__
+    public bool __eq__(Solucion otra)
+    {
+        if (otra == null) return false;
+        return string.Join("-", Coords) == string.Join("-", otra.Coords);
+    }
 
-    def __str__(self):
-        return '-'.join(str(x) for x in self.coords)
+    // Python equivalente __lt__ 
+    public int __lt__(Solucion otra)
+    {
+        if (otra == null) return 1;  // Si el otro objeto es null, este objeto es mayor
+        return Coste < otra.Coste ? -1 : (Coste > otra.Coste ? 1 : 0);
+    }
 
+    // Python equivalente __str__
+    public string __str__()
+    {
+        return string.Join("-", Coords);
+    }
 }
 
 
+// SIN ACABAR
 class AlgoritmoDeBusqueda
 {
-    private ListaCandidatos Lista;  // NO VA PQ HAY QUE HACER UN NAMESPACE PARA PODER LLAMAR A LISTA DE CANDIDATOS
+    public required ListaCandidatos listaCandidatos;
 
-    public AlgoritmoDeBusqueda(lista)
+    public AlgoritmoDeBusqueda(ListaCandidatos lista)     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! get p set
     {
-        Lista = lista;
+        listaCandidatos = lista;
     }
 
-    // ESTAS FUNCIONES NO LAS SÉ PASAR A C#
-    def calculo_de_prioridad(self, nodo_info, calculo_heuristica=None):
-        return 0
+    public int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculoHeuristica = null)
+    {
+        return 0; 
+    }
 
-    def busqueda(self, solucion_inicial, criterio_parada, obtener_vecinos, calculo_coste, calculo_heuristica=None):
-        candidatos = self.lista()
-        candidatos.anhadir(Solucion(solucion_inicial, 0))
-        vistos = dict()
-        finalizado = False
-        revisados = 0
-        while len(candidatos) > 0 and not finalizado:
-            solucion = candidatos.obtener_siguiente()
-            vistos[str(solucion)] = solucion.coste
-            revisados += 1
-            if criterio_parada(solucion):
-                finalizado = True
-                break
-            vecinos = obtener_vecinos(solucion)
-            for vecino in vecinos:
-                nueva_solucion = Solucion(
-                    coords=solucion.coords + [vecino]
-                )
-                if str(nueva_solucion) not in vistos:
-                    nueva_solucion.coste = solucion.coste+calculo_coste(solucion, nueva_solucion)
-                    candidatos.anhadir(nueva_solucion, prioridad=self.calculo_de_prioridad(nueva_solucion, calculo_heuristica))
-        if not finalizado:
-            return None
-        return solucion, revisados
+    public (Solucion, int)? Busqueda(Solucion solucionInicial, Func<Solucion, bool> criterioParada, 
+                                      Func<Solucion, List<string>> obtenerVecinos, 
+                                      Func<Solucion, Solucion, int> calculoCoste, 
+                                      Func<Solucion, int>? calculoHeuristica = null) // Aquí cambiamos a Func<Solucion, int>?
+    {
+        var candidatos = listaCandidatos; 
+        candidatos.anhadir(new Solucion(solucionInicial.Coords, 0)); 
 
+        var vistos = new Dictionary<string, int>();
+        bool finalizado = false;
+        int revisados = 0;
+
+        while (candidatos.__len__ > 0 && !finalizado)
+        {
+            var solucion = candidatos.obtener_siguiente();  
+            vistos[string.Join("-", solucion.Coords)] = solucion.Coste;
+            revisados++;
+
+            if (criterioParada(solucion))
+            {
+                finalizado = true;
+                break;
+            }
+
+            var vecinos = obtener_vecinos(solucion);
+            foreach (var vecino in vecinos)
+            {
+                var nuevaSolucion = new Solucion(coords: solucion.Coords.Concat(new[] { vecino }).ToList());
+
+                if (!vistos.ContainsKey(string.Join("-", nuevaSolucion.Coords)))
+                {
+                    nuevaSolucion.Coste = solucion.Coste + calculo_coste(solucion, nuevaSolucion);
+                    candidatos.anhadir(nuevaSolucion, calculo_de_prioridad(nuevaSolucion, calculoHeuristica));
+                }
+            }
+        }
+
+        if (!finalizado)
+        {
+            return null;
+        }
+
+        return (solucion, revisados);
+    }
 }
 
-// ESTO ESTÁ EN C#
-class AEstrella:AlgoritmoDeBusqueda
+
+
+// ESTA ESTÁ BIEN
+class AEstrella : AlgoritmoDeBusqueda
 {
-    public AEstrella() : base() {}
+    public AEstrella(): base() {}
 
-    //ESTO NO ESTÁ EN C#
-    def calculo_de_prioridad(self, solucion, calculo_heuristica=None):
-        return solucion.coste + calculo_heuristica(solucion)
+    // Método que calcula la prioridad usando la función externa
+    public int calculo_de_prioridad(Solucion solucion)
+    {
+        return solucion.Coste + calculo_heuristica(solucion);
+    }
 }
+
+
 
 
