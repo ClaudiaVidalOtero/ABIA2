@@ -15,13 +15,13 @@ namespace Ejecutable
     {
         static void Main()
         {
-            int reinas = 5;
+            int reinas = 6;
             
-            ListaCandidatos lista = new ColaDePrioridad(); // Se crea una cola de prioridad (lista de candidatos)
+            PilaCandidatos pila = new PilaCandidatos(); // Se crea una cola de prioridad (lista de candidatos)
 
             List<(int, int)> solucion_inicial = new List<(int, int)>(); // Solución inicial vacía
 
-            AEstrella astar = new AEstrella(lista); // Instanciamos el algoritmo A* pasando la cola de prioridad
+            BusquedaProfundidad astar = new BusquedaProfundidad(pila); // Instanciamos el algoritmo A* pasando la cola de prioridad
 
             // Se realiza la búsqueda con A*, pasando la solución inicial y las funciones de parada, vecinos, coste y heurística
             (Solucion solucion, int revisados)? resultado = astar.busqueda(

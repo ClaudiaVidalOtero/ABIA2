@@ -12,7 +12,7 @@ namespace Algoritmos
     /// 
     /// </summary>
 
-    class AlgoritmoDeBusqueda
+    public class AlgoritmoDeBusqueda
     {
         /// <summary>
         /// Lista de candidatos que almacena las soluciones generadas.
@@ -121,20 +121,18 @@ namespace Algoritmos
             return solucion.Coste + (calculo_heuristica != null ? calculo_heuristica(solucion) : 0);
         }
 
-        /// <summary>
-        /// Método que ejecuta la busqueda usando la estrategia de A*.
-        /// </summary>
-        public override (Solucion, int)? busqueda(
-        Solucion solucion_inicial,
-        Func<Solucion, bool> criterio_parada,
-        Func<Solucion, List<(int, int)>> obtener_vecinos,
-        Func<Solucion, Solucion, int> calculo_coste,
-        Func<Solucion, int>? calculo_heuristica = null)
-        {
-            return base.busqueda(solucion_inicial, criterio_parada, obtener_vecinos, calculo_coste, calculo_heuristica);
-        }
+        
 
+    }
 
+    public class BusquedaProfundidad : AlgoritmoDeBusqueda
+    {
+        public BusquedaProfundidad(PilaCandidatos pila) : base(new PilaCandidatos()) { }
+    }
+
+    public class BusquedaPorAnchura : AlgoritmoDeBusqueda
+    {
+        public BusquedaPorAnchura(ColaCandidatos cola) : base(new ColaCandidatos()) { }
     }
 
 }

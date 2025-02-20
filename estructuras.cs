@@ -2,6 +2,7 @@
 // Aldana Smyna Medina Lostaunau
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using Ejecutable;
 using Algoritmos;
@@ -154,6 +155,135 @@ namespace Estructuras
         }
         /// <summary> Obtiene la cantidad de elementos en la cola de prioridad. </summary>
         public override int __len__ => buscador.Count;
+    }
+
+
+    
+    public class PilaCandidatos : ListaCandidatos
+    {
+        private List<List<int>> pila;
+
+        public PilaCandidatos()
+        {
+            pila = new List<List<int>>();
+        }
+
+        public void Anhadir(List<int> solucion, int prioridad = 0)
+        {
+            Apilar(solucion);
+        }
+
+        public void Borrar(List<int> solucion)
+        {
+            pila.Remove(solucion);
+        }
+
+        public List<int>? ObtenerSiguiente()
+        {
+            if (!EstaVacia())
+            {
+                return Desapilar();
+            }
+            return null;
+        }
+
+        public bool EstaVacia()
+        {
+            return pila.Count == 0;
+        }
+
+        public void Apilar(List<int> solucion)
+        {
+            pila.Add(solucion);
+        }
+
+        public List<int> Desapilar()
+        {
+            if (!EstaVacia())
+            {
+                var elemento = pila[pila.Count - 1];
+                pila.RemoveAt(pila.Count - 1);
+                return elemento;
+            }
+            throw new InvalidOperationException("La pila está vacía.");
+        }
+
+        public int Count()
+        {
+            return pila.Count;
+        }
+    }
+
+
+    public class ColaCandidatos : ListaCandidatos
+    {
+        private Queue<(List<int>, int)> cola;
+
+        public ColaCandidatos()
+        {
+            cola = new Queue<(List<int>, int)>();
+        }
+
+        public void Anhadir(List<int> solucion, int prioridad = 0)
+        {
+            Encolar((solucion, prioridad));
+        }
+
+        public void Borrar(List<int> solucion)
+        {
+            if (cola.Count == 0) throw new InvalidOperationException("La cola está vacía");
+            
+            var nuevaCola = new Queue<(List<int>, int)>();
+            bool encontrado = false;
+            
+            foreach (var item in cola)
+            {
+                if (!encontrado && item.Item1.Equals(solucion))
+                {
+                    encontrado = true;
+                    continue;
+                }
+                nuevaCola.Enqueue(item);
+            }
+            
+            if (!encontrado)
+                throw new KeyNotFoundException("La solución no está en la cola");
+            
+            cola = nuevaCola;
+        }
+
+        public List<int>? ObtenerSiguiente()
+        {
+            if (!EstaVacia())
+            {
+                return Desencolar().Item1;
+            }
+            return null;
+        }
+
+        public bool EstaVacia()
+        {
+            return cola.Count == 0;
+        }
+
+        public void Encolar((List<int>, int) solucion)
+        {
+            cola.Enqueue(solucion);
+        }
+
+        public (List<int>, int) Desencolar()
+        {
+            if (!EstaVacia())
+            {
+                return cola.Dequeue();
+            }
+            throw new InvalidOperationException("La cola está vacía");
+        }
+
+        public int Count()
+        {
+            return cola.Count;
+        }
     }
 
 }
