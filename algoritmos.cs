@@ -61,7 +61,7 @@ namespace Algoritmos
             while (candidatos.__len__ > 0 && !finalizado)
             {
                 solucion = candidatos.obtener_siguiente();
-                vistos[solucion.__str__()] = solucion.Coste; // Se marca como visitada la solución actual                     
+                vistos[solucion.ToString()] = solucion.Coste; // Se marca como visitada la solución actual                     
                 revisados++;
 
                 // Verifica si la solución cumple el criterio de parada
@@ -81,7 +81,7 @@ namespace Algoritmos
                     Solucion nueva_solucion = new Solucion(nuevas_coordenadas, 0);
 
                     // Si la nueva solución no ha sido explorada, se evalúa y añade a la lista
-                    if (!vistos.ContainsKey(nueva_solucion.__str__()))
+                    if (!vistos.ContainsKey(nueva_solucion.ToString()))
                     {
                         nueva_solucion.Coste = solucion.Coste + calculo_coste(solucion, nueva_solucion);
                         int prioridad = calculo_de_prioridad(nueva_solucion, calculo_heuristica);
@@ -125,13 +125,27 @@ namespace Algoritmos
 
     }
 
+    /// <summary>
+    /// Implementación del algortimo de Búsqueda por profundidad
+    /// </summary>
     public class BusquedaProfundidad : AlgoritmoDeBusqueda
     {
+        /// <summary>
+        /// Constructor de BusquedaProfundidad que inicializa la pila de candidatos.
+        /// </summary>
+        /// <param name="pila">Pila de candidatos utilizada.</param>
         public BusquedaProfundidad(PilaCandidatos pila) : base(new PilaCandidatos()) { }
     }
 
+    /// <summary>
+    /// Implementación del algortimo de Búsqueda por anchura
+    /// </summary>
     public class BusquedaPorAnchura : AlgoritmoDeBusqueda
     {
+        /// <summary>
+        /// Constructor de BusquedaPorAnchura que inicializa la cola de candidatos.
+        /// </summary>
+        /// <param name="cola">Cola de candidatos utilizada.</param>
         public BusquedaPorAnchura(ColaCandidatos cola) : base(new ColaCandidatos()) { }
     }
 

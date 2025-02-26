@@ -37,7 +37,7 @@ namespace Estructuras
         /// </returns>
         /// <param name="other">La otra solución a comparar.</param>
 
-        public bool __eq__(Solucion other)
+        public bool Equals(Solucion other)
         {
             if (other == null) return false;
             return string.Join("-", Coords) == string.Join("-", other.Coords);
@@ -50,7 +50,7 @@ namespace Estructuras
         /// </returns>
         /// <param name="other">La otra solución a comparar.</param>
 
-        public int __lt__(Solucion other)
+        public int CompareTo(Solucion other)
         {
             if (other == null) return 1;
             return Coste < other.Coste ? -1 : (Coste > other.Coste ? 1 : 0);
@@ -58,7 +58,7 @@ namespace Estructuras
         /// <summary>
         /// Devuelve una representación en cadena de la solución (sus coordenadas unidas por "-").
         /// </summary>
-        public string __str__()
+        public override string ToString()
         {
             return string.Join("-", Coords);
         }
@@ -99,7 +99,7 @@ namespace Estructuras
         /// <param name="prioridad">Prioridad de la solución.</param>
         public override void anhadir(Solucion solucion, int prioridad = 0)
         {
-            string str_solucion = solucion.__str__(); // Obtiene la representación en string de la solución
+            string str_solucion = solucion.ToString(); // Obtiene la representación en string de la solución
             // Si la solución ya existe con una prioridad igual o menor, no se añade
             if (buscador.ContainsKey(str_solucion))
             {
@@ -122,7 +122,7 @@ namespace Estructuras
         /// <param name="solucion"> Solución a eliminar. </param>
         public override void borrar(Solucion solucion)
         {
-            string str_solucion = solucion.__str__();
+            string str_solucion = solucion.ToString();
             
             if (buscador.ContainsKey(str_solucion))
             {
@@ -147,7 +147,7 @@ namespace Estructuras
                 // Si la solución no ha sido marcada como eliminada, se devuelve
                 if (solucion.Coste != REMOVED)
                 {
-                    buscador.Remove(solucion.__str__()); // Se elimina del diccionario
+                    buscador.Remove(solucion.ToString()); // Se elimina del diccionario
                     return solucion;
                 }
             }
@@ -158,132 +158,87 @@ namespace Estructuras
     }
 
 
-    
     public class PilaCandidatos : ListaCandidatos
     {
-        private List<List<int>> pila;
+        private List<Solucion> pila;
 
         public PilaCandidatos()
         {
-            pila = new List<List<int>>();
+            pila = new List<Solucion>();
         }
 
-        public void Anhadir(List<int> solucion, int prioridad = 0)
+        public override void anhadir(Solucion solucion, int prioridad = 0)
         {
-            Apilar(solucion);
+            pila.Add(solucion);  // Se agrega al final de la lista, manteniendo el comportamiento de pila (LIFO)
         }
 
-        public void Borrar(List<int> solucion)
+        public override void borrar(Solucion solucion)
         {
-            pila.Remove(solucion);
-        }
-
-        public List<int>? ObtenerSiguiente()
-        {
-            if (!EstaVacia())
+            // Elimina la primera aparición desde el tope de la pila
+            for (int i = pila.Count - 1; i >= 0; i--)
             {
-                return Desapilar();
+                if (pila[i].Equals(solucion))
+                {
+                    pila.RemoveAt(i);
+                    break; // Solo elimina la última instancia (LIFO)
+                }
             }
-            return null;
         }
 
-        public bool EstaVacia()
+        public override Solucion obtener_siguiente()
         {
-            return pila.Count == 0;
-        }
-
-        public void Apilar(List<int> solucion)
-        {
-            pila.Add(solucion);
-        }
-
-        public List<int> Desapilar()
-        {
-            if (!EstaVacia())
+            if (!esta_vacia())
             {
-                var elemento = pila[pila.Count - 1];
+                Solucion solucion = pila[^1]; // Último elemento (top)
                 pila.RemoveAt(pila.Count - 1);
-                return elemento;
+                return solucion;
             }
             throw new InvalidOperationException("La pila está vacía.");
         }
 
-        public int Count()
+        public bool esta_vacia()
         {
-            return pila.Count;
+            return pila.Count == 0;
         }
+
+        public override int __len__ => pila.Count;
     }
 
 
     public class ColaCandidatos : ListaCandidatos
     {
-        private Queue<(List<int>, int)> cola;
+        private Queue<Solucion> cola;
 
         public ColaCandidatos()
         {
-            cola = new Queue<(List<int>, int)>();
+            cola = new Queue<Solucion>();
         }
 
-        public void Anhadir(List<int> solucion, int prioridad = 0)
+        public override void anhadir(Solucion solucion, int prioridad = 0)
         {
-            Encolar((solucion, prioridad));
+            cola.Enqueue(solucion);  // Solo agregamos la solución
         }
 
-        public void Borrar(List<int> solucion)
+        public override void borrar(Solucion solucion)
         {
-            if (cola.Count == 0) throw new InvalidOperationException("La cola está vacía");
-            
-            var nuevaCola = new Queue<(List<int>, int)>();
-            bool encontrado = false;
-            
-            foreach (var item in cola)
+            cola = new Queue<Solucion>(cola.Where(s => !s.Equals(solucion)));
+        }
+
+        public override Solucion obtener_siguiente()
+        {
+            if (!esta_vacia())
             {
-                if (!encontrado && item.Item1.Equals(solucion))
-                {
-                    encontrado = true;
-                    continue;
-                }
-                nuevaCola.Enqueue(item);
+                return cola.Dequeue();
             }
-            
-            if (!encontrado)
-                throw new KeyNotFoundException("La solución no está en la cola");
-            
-            cola = nuevaCola;
+            throw new InvalidOperationException("La cola está vacía.");
         }
 
-        public List<int>? ObtenerSiguiente()
-        {
-            if (!EstaVacia())
-            {
-                return Desencolar().Item1;
-            }
-            return null;
-        }
-
-        public bool EstaVacia()
+        public bool esta_vacia()
         {
             return cola.Count == 0;
         }
 
-        public void Encolar((List<int>, int) solucion)
-        {
-            cola.Enqueue(solucion);
-        }
-
-        public (List<int>, int) Desencolar()
-        {
-            if (!EstaVacia())
-            {
-                return cola.Dequeue();
-            }
-            throw new InvalidOperationException("La cola está vacía");
-        }
-
-        public int Count()
-        {
-            return cola.Count;
-        }
+        public override int __len__ => cola.Count;
     }
 
 }

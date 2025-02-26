@@ -10,40 +10,42 @@ namespace Ejecutable
 {
     class Program
     /// <summary>
-    /// Programa principal que ejecuta el algoritmo A* para resolver el problema.
+    /// Programa principal que ejecuta el algoritmo para resolver el problema.
     /// </summary>
     {
         static void Main()
         {
-            int reinas = 6;
-            
-            PilaCandidatos pila = new PilaCandidatos(); // Se crea una cola de prioridad (lista de candidatos)
+            List<int> listaReinas = new List<int> { 4, 5, 6, 7, 8}; // Diferentes cantidades de reinas a probar
 
-            List<(int, int)> solucion_inicial = new List<(int, int)>(); // Solución inicial vacía
-
-            BusquedaProfundidad astar = new BusquedaProfundidad(pila); // Instanciamos el algoritmo A* pasando la cola de prioridad
-
-            // Se realiza la búsqueda con A*, pasando la solución inicial y las funciones de parada, vecinos, coste y heurística
-            (Solucion solucion, int revisados)? resultado = astar.busqueda(
-                new Solucion(solucion_inicial, 0),
-                s => criterio_parada(s, reinas),
-                s => obtener_vecinos(s, reinas),
-                calculo_coste,
-                calculo_heuristica
-            );
-            
-            // Si se encuentra una solución válida, mostramos los resultados
-            if (resultado != null)
+            foreach (int reinas in listaReinas)
             {
-                Console.WriteLine("Coordenadas: " + string.Join(", ", resultado.Value.Item1.Coords));
-                Console.WriteLine("Nodos evaluados: " + resultado.Value.Item2);
-            }
-            else
-            {
-                Console.WriteLine("No se encontró solución.");
+                Console.WriteLine($"\nResolviendo para {reinas} reinas...");
+
+                PilaCandidatos pila = new PilaCandidatos();     // Estructura de datos para ejemplo
+
+                List<(int, int)> solucionInicial = new List<(int, int)>(); // Solución inicial vacía
+
+                BusquedaProfundidad busqueda1 = new BusquedaProfundidad(pila);  // Insatancia de la clase BusquedaPorProfundidad para el ejemplo
+
+                var resultado = busqueda1.busqueda(
+                    new Solucion(solucionInicial, 0),
+                    s => criterio_parada(s, reinas),
+                    s => obtener_vecinos(s, reinas),
+                    calculo_coste,
+                    calculo_heuristica
+                );
+
+                if (resultado != null)
+                {
+                    Console.WriteLine("Coordenadas de las reinas: " + string.Join(", ", resultado.Value.Item1.Coords));
+                    Console.WriteLine("Nodos evaluados: " + resultado.Value.Item2);
+                }
+                else
+                {
+                    Console.WriteLine("No se encontró solución.");
+                }
             }
         }
-
         /// <summary>
         /// Función para calcular el coste entre soluciones.
         /// En este caso, el coste es siempre 1.
