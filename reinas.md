@@ -20,6 +20,7 @@ Resolviendo para 8 reinas...
 Coordenadas de las reinas: (0, 0), (1, 4), (2, 7), (3, 5), (4, 2), (5, 6), (6, 1), (7, 3)
 Nodos evaluados: 3696597
 
+
 BUSQUEDA POR PROFUNDIDAD:
 
 Resolviendo para 4 reinas...
@@ -41,3 +42,5 @@ Nodos evaluados: 52914
 Resolviendo para 8 reinas...
 Coordenadas de las reinas: (0, 7), (1, 3), (2, 0), (3, 2), (4, 5), (5, 1), (6, 6), (7, 4)
 Nodos evaluados: 1485549
+
+

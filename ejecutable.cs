@@ -25,7 +25,7 @@ namespace Ejecutable
 
                 List<(int, int)> solucionInicial = new List<(int, int)>(); // Solución inicial vacía
 
-                BusquedaProfundidad busqueda1 = new BusquedaProfundidad(pila);  // Insatancia de la clase BusquedaPorProfundidad para el ejemplo
+                BusquedaProfundidad busqueda1 = new BusquedaProfundidad(pila);  // Insatancia de la clase de búsqueda para el ejemplo
 
                 var resultado = busqueda1.busqueda(
                     new Solucion(solucionInicial, 0),
@@ -55,7 +55,7 @@ namespace Ejecutable
         /// <returns>El coste entre las soluciones</returns>
         static int calculo_coste(Solucion solucion, Solucion nueva_solucion)
         {
-            return 1;
+            return -1;
         }
 
         /// <summary>

@@ -82,7 +82,7 @@ namespace Estructuras
     {
         private readonly List<(int prioridad, Solucion solucion)> cp;
         private readonly Dictionary<string, (int prioridad, Solucion solucion)> buscador;
-        private const int REMOVED = -1; // -1, const solo acepta int
+        private const int REMOVED = 9999999;   // coste solo acepta int
         
         /// <summary> Constructor de la cola de prioridad. </summary>
         public ColaDePrioridad()
