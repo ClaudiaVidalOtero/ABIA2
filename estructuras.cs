@@ -157,34 +157,48 @@ namespace Estructuras
         public override int __len__ => buscador.Count;
     }
 
-
+    /// <summary>
+    /// Implementación de una pila (LIFO) para gestionar soluciones.
+    /// </summary>
     public class PilaCandidatos : ListaCandidatos
     {
-        private List<Solucion> pila;
+        private List<Solucion> pila; // Lista interna que actúa como pila.
 
+        /// <summary> Constructor de la pila de candidatos. </summary>
         public PilaCandidatos()
         {
             pila = new List<Solucion>();
         }
-
+        /// <summary>
+        /// Agrega una solución a la pila.
+        /// La solución más reciente se encuentra en la parte superior.
+        /// </summary>
+        /// <param name="solucion">Solución a agregar.</param>
+        /// <param name="prioridad">Este parámetro no se usa en la pila.</param>
         public override void anhadir(Solucion solucion, int prioridad = 0)
         {
             pila.Add(solucion);  // Se agrega al final de la lista, manteniendo el comportamiento de pila (LIFO)
         }
 
+        /// <summary> Elimina el último elemento de la pila. </summary>
+        /// <param name="solucion">Solución a eliminar.</param>
         public override void borrar(Solucion solucion)
         {
-            // Elimina la primera aparición desde el tope de la pila
+            // Se recorre la lista desde el final (últimos elementos primero)
             for (int i = pila.Count - 1; i >= 0; i--)
             {
                 if (pila[i].Equals(solucion))
                 {
                     pila.RemoveAt(i);
-                    break; // Solo elimina la última instancia (LIFO)
+                    break; // Solo elimina la última instancia encontrada (LIFO)
                 }
             }
         }
 
+
+        /// <summary> Extrae y devuelve la última solución añadida (tope de la pila) </summary>
+        /// <returns> La solución en la cima de la pila </returns>
+        /// <exception cref="InvalidOperationException">Se lanza si la pila está vacía.</exception>
         public override Solucion obtener_siguiente()
         {
             if (!esta_vacia())
@@ -196,48 +210,69 @@ namespace Estructuras
             throw new InvalidOperationException("La pila está vacía.");
         }
 
+        /// <summary> Verifica si la pila está vacía </summary>
         public bool esta_vacia()
         {
             return pila.Count == 0;
         }
 
+        /// <summary> Obtiene la cantidad de elementos en la pila. </summary>
         public override int __len__ => pila.Count;
     }
 
-
+    /// <summary> Implementación de una cola (FIFO) para gestionar soluciones </summary>
     public class ColaCandidatos : ListaCandidatos
     {
-        private Queue<Solucion> cola;
+        private Queue<Solucion> cola; // Cola interna basada en la estructura Queue
 
+        /// <summary> Constructor de la cola de candidatos. </summary>
         public ColaCandidatos()
         {
             cola = new Queue<Solucion>();
         }
 
+        /// <summary>
+        /// Agrega una solución a la cola.
+        /// La primera solución añadida será la primera en salir.
+        /// </summary>
+        /// <param name="solucion">Solución a agregar </param>
+        /// <param name="prioridad">Este parámetro no se usa en la cola.</param>
         public override void anhadir(Solucion solucion, int prioridad = 0)
         {
             cola.Enqueue(solucion);  // Solo agregamos la solución
         }
 
+        /// <summary>
+        /// Elimina todas las apariciones de una solución en la cola.
+        /// </summary>
+        /// <param name="solucion">Solución a eliminar.</param>
         public override void borrar(Solucion solucion)
         {
+            // Se filtran las soluciones diferentes a la que queremos borrar.
             cola = new Queue<Solucion>(cola.Where(s => !s.Equals(solucion)));
         }
 
+        /// <summary>
+        /// Extrae y devuelve la primera solución añadida a la cola.
+        /// </summary>
+        /// <returns>La solución al frente de la cola </returns>
+        /// <exception cref="InvalidOperationException">Se lanza si la cola está vacía.</exception>
         public override Solucion obtener_siguiente()
         {
             if (!esta_vacia())
             {
-                return cola.Dequeue();
+                return cola.Dequeue(); 
             }
             throw new InvalidOperationException("La cola está vacía.");
         }
 
+        /// <summary> Verifica si la cola está vacía </summary>
         public bool esta_vacia()
         {
             return cola.Count == 0;
         }
 
+        /// <summary> Obtiene la cantidad de elementos en la cola. </summary>
         public override int __len__ => cola.Count;
     }
 
