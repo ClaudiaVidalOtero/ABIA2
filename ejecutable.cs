@@ -25,7 +25,7 @@ namespace Ejecutable
 
                 List<(int, int)> solucionInicial = new List<(int, int)>(); // Solución inicial vacía
 
-                AEstrella busqueda1 = new AEstrella(lista);  // Insatancia de la clase de búsqueda para el ejemplo
+                CosteUniforme busqueda1 = new CosteUniforme(lista);  // Insatancia de la clase de búsqueda para el ejemplo
 
                 var resultado = busqueda1.busqueda(
                     new Solucion(solucionInicial, 0),
