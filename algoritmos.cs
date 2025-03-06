@@ -102,9 +102,9 @@ namespace Algoritmos
     class AEstrella : AlgoritmoDeBusqueda
     {
         /// <summary>
-        /// Constructor de A* que inicializa la lista de candidatos.
+        /// Constructor de A* que toma cola de prioridad como argumento.
         /// </summary>
-        /// <param name="lista">Lista de candidatos utilizada.</param>
+        /// <param name="lista">Cola de prioridad utilizada.</param>
         public AEstrella(ColaDePrioridad lista) : base(lista) {}
         
         /// <summary>
