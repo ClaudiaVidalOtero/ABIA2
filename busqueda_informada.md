@@ -12,6 +12,7 @@ La clase `CosteUniforme` implementa un algoritmo de búsqueda basado en el costo
 3. MODIFICACIÓN DE LA FUNCIÓN DE COSTE
 
 Modificamos la función de coste para que en vez de devolver siempre coste constante 1 devuelva el coste acumulado hasta la nueva solución. El coste acumulado corresponde a la cantidad de nodos atravesados hasta el momento, sumando uno cada nodo nuevo.
+
 4. MODIFICACIÓN DE LA FUNCIÓN DE HEURÍSTICA
 
 Modificamos la función de heurística para que en vez de devolver siempre heurística constante 0, evalue la cantidad de conflictos entre reinas en una solución del problema de las N reinas, contando cuántas parejas de reinas están en la misma fila, columna o diagonal. Si devuelve 0, la solución es válida; si es mayor, indica conflictos. 
