@@ -15,17 +15,17 @@ namespace Ejecutable
     {
         static void Main()
         {
-            List<int> listaReinas = new List<int> { 4, 5, 6, 7, 8}; // Diferentes cantidades de reinas a probar
+            List<int> listaReinas = new List<int> {4, 5, 6, 7, 8, 9, 10, 11}; // Diferentes cantidades de reinas a probar
 
             foreach (int reinas in listaReinas)
             {
                 Console.WriteLine($"\nResolviendo para {reinas} reinas...");
 
-                PilaCandidatos pila = new PilaCandidatos();     // Estructura de datos para ejemplo
+                ColaDePrioridad lista = new ColaDePrioridad();     // Estructura de datos para ejemplo
 
                 List<(int, int)> solucionInicial = new List<(int, int)>(); // Solución inicial vacía
 
-                BusquedaProfundidad busqueda1 = new BusquedaProfundidad(pila);  // Insatancia de la clase de búsqueda para el ejemplo
+                AEstrella busqueda1 = new AEstrella(lista);  // Insatancia de la clase de búsqueda para el ejemplo
 
                 var resultado = busqueda1.busqueda(
                     new Solucion(solucionInicial, 0),
@@ -47,27 +47,40 @@ namespace Ejecutable
             }
         }
         /// <summary>
-        /// Función para calcular el coste entre soluciones.
-        /// En este caso, el coste es siempre 1.
+        /// Calcula el coste de moverse de la solución actual a la nueva solución.
+        /// En este contexto, el coste representa el número de pasos dados hasta el momento.
         /// </summary>
         /// <param name="solucion">La solución actual.</param>
-        /// <param name="nueva_solucion">La nueva solución a evaluar.</param>
-        /// <returns>El coste entre las soluciones</returns>
+        /// <param name="nueva_solucion">La nueva solución generada a partir de la actual.</param>
+        /// <returns>El coste acumulado hasta la nueva solución.</returns>
         static int calculo_coste(Solucion solucion, Solucion nueva_solucion)
-        {
-            return -1;
+        { 
+            return solucion.Coste + 1;
         }
 
-        /// <summary>
-        /// Función para calcular la heurística de una solución.
-        /// En este caso, siempre devuelve 0 (no se está utilizando una heurística específica).
-        /// </summary>
-        /// <param name="solucion"> La solución a evaluar. </param>
-        /// <returns> El valor de la heurística </returns>
         static int calculo_heuristica(Solucion solucion)
         {
-            return 0;
+            int conflictos = 0;
+            int n = solucion.Coords.Count;
+            
+            // Recorremos todas las coordenadas de las reinas
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = i + 1; j < n; j++)
+                {
+                    // Verificamos si las reinas están en la misma fila, columna o diagonal
+                    if (solucion.Coords[i].Item1 == solucion.Coords[j].Item1 || // Mismo fila
+                        solucion.Coords[i].Item2 == solucion.Coords[j].Item2 || // Mismo columna
+                        Math.Abs(solucion.Coords[i].Item1 - solucion.Coords[j].Item1) == Math.Abs(solucion.Coords[i].Item2 - solucion.Coords[j].Item2)) // Misma diagonal
+                    {
+                        conflictos++;
+                    }
+                }
+            }
+
+            return conflictos; // Devolvemos la cantidad de conflictos como heurística
         }
+
         /// <summary>
         /// Función que devuelve los vecinos de una solución dada, es decir, las posiciones de las reinas que pueden ser colocadas.
         /// Genera todas las posibles ubicaciones para la siguiente reina en la siguiente fila.

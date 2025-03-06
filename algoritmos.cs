@@ -8,9 +8,6 @@ using Ejecutable;
 
 namespace Algoritmos
 {
-    /// <summary>
-    /// 
-    /// </summary>
 
     public class AlgoritmoDeBusqueda
     {
@@ -32,9 +29,9 @@ namespace Algoritmos
         /// Calcula la prioridad de una solución dada, usando una heurística opcional.
         /// </summary>
         /// <param name="solucion"> Solución a evaluar. </param>
-        /// <param name="calculoHeuristica"> Función heurística opcional. </param>
+        /// <param name="calculo_heuristica"> Función heurística opcional. </param>
         /// <returns> Un valor entero que representa la prioridad. </returns>
-        public int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculoHeuristica = null)
+        public virtual int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculo_heuristica = null)
         {
             return 0; 
         }
@@ -108,23 +105,19 @@ namespace Algoritmos
         /// Constructor de A* que inicializa la lista de candidatos.
         /// </summary>
         /// <param name="lista">Lista de candidatos utilizada.</param>
-        public AEstrella(ListaCandidatos lista) : base(lista) {}
-
+        public AEstrella(ColaDePrioridad lista) : base(lista) {}
+        
         /// <summary>
         /// Calcula la prioridad de una solución considerando su coste y heuristica.
         /// </summary>
         /// <param name="solucion"> Solución a evaluar. </param>
         /// <param name="calculo_heuristica"> Funcion heurística opcional. </param>
         /// <returns> Prioridad basada en coste más heurística. </returns>
-        public new int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculo_heuristica=null)
+        public override int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculo_heuristica=null)
         {
             return solucion.Coste + (calculo_heuristica != null ? calculo_heuristica(solucion) : 0);
         }
-
-        
-
     }
-
     /// <summary>
     /// Implementación del algortimo de Búsqueda por profundidad
     /// </summary>
@@ -136,7 +129,6 @@ namespace Algoritmos
         /// <param name="pila">Pila de candidatos utilizada.</param>
         public BusquedaProfundidad(PilaCandidatos pila) : base(new PilaCandidatos()) { }
     }
-
     /// <summary>
     /// Implementación del algortimo de Búsqueda por anchura
     /// </summary>
@@ -148,5 +140,42 @@ namespace Algoritmos
         /// <param name="cola">Cola de candidatos utilizada.</param>
         public BusquedaPorAnchura(ColaCandidatos cola) : base(new ColaCandidatos()) { }
     }
+        // Clase CosteUniforme
+    public class CosteUniforme : AlgoritmoDeBusqueda
+    {
+        /// <summary>
+        /// Constructor de CosteUniforme que inicializa el algoritmo con una cola de prioridad.
+        /// </summary>
+        public CosteUniforme(ColaDePrioridad lista) : base(lista) {}
+        /// <summary>
+        /// Calcula la prioridad de una solución en Coste Uniforme, que es únicamente su coste.
+        /// </summary>
+        /// <param name="solucion">Solución a evaluar.</param>
+        /// <param name="calculo_heuristica">Función heurística opcional (no utilizada en este caso).</param>
+        /// <returns>El coste de la solución.</returns>
+        public override int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculo_heuristica = null)
+        {
+            solucion.Coste = 1; // Coste uniforme siempre es 1
+            return solucion.Coste;
+        }
+    }
 
+    // Clase BusquedaAvara
+    class BusquedaAvara : AlgoritmoDeBusqueda
+    {
+        /// <summary>
+        /// Constructor de BusquedaAvara que inicializa el algoritmo con una cola de prioridad.
+        /// </summary>
+        public BusquedaAvara(ColaDePrioridad lista) : base(lista) {}
+        /// <summary>
+        /// Calcula la prioridad de una solución en Búsqueda Avara, que es únicamente la heurística.
+        /// </summary>
+        /// <param name="solucion">Solución a evaluar.</param>
+        /// <param name="calculo_heuristica">Función heurística proporcionada.</param>
+        /// <returns>El valor heurístico de la solución.</returns>
+        public override int calculo_de_prioridad(Solucion solucion,Func<Solucion, int>? calculo_heuristica = null)
+        {
+            return calculo_heuristica != null ? calculo_heuristica(solucion) : 0;
+        }
+    }
 }
