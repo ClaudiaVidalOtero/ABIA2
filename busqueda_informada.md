@@ -46,13 +46,13 @@ Nodos evaluados: 8476
 
 # COSTE UNIFROME:
 Resolviendo para 4 reinas...
-Coordenadas de las reinas: (0, 2), (1, 0), (2, 3), (3, 1)
-Nodos evaluados: 193
+Coordenadas de las reinas: (0, 1), (1, 3), (2, 0), (3, 2)
+Nodos evaluados: 134
 
 Resolviendo para 5 reinas...
-Coordenadas de las reinas: (0, 3), (1, 0), (2, 2), (3, 4), (4, 1)
-Nodos evaluados: 436
+Coordenadas de las reinas: (0, 2), (1, 4), (2, 1), (3, 3), (4, 0)
+Nodos evaluados: 1065
 
 Resolviendo para 6 reinas...
-Coordenadas de las reinas: (0, 3), (1, 0), (2, 4), (3, 1), (4, 5), (5, 2)
-Nodos evaluados: 10363
+Coordenadas de las reinas: (0, 4), (1, 2), (2, 0), (3, 5), (4, 3), (5, 1)
+Nodos evaluados: 14038

@@ -105,7 +105,7 @@ namespace Algoritmos
         /// Constructor de A* que toma cola de prioridad como argumento.
         /// </summary>
         /// <param name="lista">Cola de prioridad utilizada.</param>
-        public AEstrella(ColaDePrioridad lista) : base(lista) {}
+        public AEstrella(ColaDePrioridad cola) : base(cola) {}
         
         /// <summary>
         /// Calcula la prioridad de una solución considerando su coste y heuristica.
@@ -127,7 +127,7 @@ namespace Algoritmos
         /// Constructor de BusquedaProfundidad que inicializa la pila de candidatos.
         /// </summary>
         /// <param name="pila">Pila de candidatos utilizada.</param>
-        public BusquedaProfundidad(PilaCandidatos pila) : base(new PilaCandidatos()) { }
+        public BusquedaProfundidad(PilaCandidatos pila) : base(pila) { }
     }
     /// <summary>
     /// Implementación del algortimo de Búsqueda por anchura
@@ -138,35 +138,34 @@ namespace Algoritmos
         /// Constructor de BusquedaPorAnchura que inicializa la cola de candidatos.
         /// </summary>
         /// <param name="cola">Cola de candidatos utilizada.</param>
-        public BusquedaPorAnchura(ColaCandidatos cola) : base(new ColaCandidatos()) { }
+        public BusquedaPorAnchura(ColaCandidatos cola) : base(cola) { }
     }
-        // Clase CosteUniforme
+
     public class CosteUniforme : AlgoritmoDeBusqueda
     {
         /// <summary>
         /// Constructor de CosteUniforme que inicializa el algoritmo con una cola de prioridad.
         /// </summary>
-        public CosteUniforme(ColaDePrioridad lista) : base(lista) {}
+        public CosteUniforme(ColaDePrioridad cola) : base(cola) {}
         /// <summary>
-        /// Calcula la prioridad de una solución en Coste Uniforme, que es únicamente su coste.
+        /// Calcula la prioridad de una solución en Coste Uniforme, que es únicamente su coste
+        /// y garantiza explorar primero los nodos de menor coste.
         /// </summary>
         /// <param name="solucion">Solución a evaluar.</param>
         /// <param name="calculo_heuristica">Función heurística opcional (no utilizada en este caso).</param>
         /// <returns>El coste de la solución.</returns>
         public override int calculo_de_prioridad(Solucion solucion, Func<Solucion, int>? calculo_heuristica = null)
         {
-            solucion.Coste = 1; // Coste uniforme siempre es 1
-            return solucion.Coste;
+            return solucion.Coste; //  Refleja el coste acumulado de alcanzar esa solución
         }
     }
 
-    // Clase BusquedaAvara
     class BusquedaAvara : AlgoritmoDeBusqueda
     {
         /// <summary>
         /// Constructor de BusquedaAvara que inicializa el algoritmo con una cola de prioridad.
         /// </summary>
-        public BusquedaAvara(ColaDePrioridad lista) : base(lista) {}
+        public BusquedaAvara(ColaDePrioridad cola) : base(cola) {}
         /// <summary>
         /// Calcula la prioridad de una solución en Búsqueda Avara, que es únicamente la heurística.
         /// </summary>

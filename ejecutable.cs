@@ -21,11 +21,11 @@ namespace Ejecutable
             {
                 Console.WriteLine($"\nResolviendo para {reinas} reinas...");
 
-                ColaDePrioridad lista = new ColaDePrioridad();     // Estructura de datos para ejemplo
+                PilaCandidatos cola = new PilaCandidatos();     // Estructura de datos para ejemplo
 
                 List<(int, int)> solucionInicial = new List<(int, int)>(); // Solución inicial vacía
 
-                CosteUniforme busqueda1 = new CosteUniforme(lista);  // Insatancia de la clase de búsqueda para el ejemplo
+                BusquedaProfundidad busqueda1 = new BusquedaProfundidad(cola);  // Insatancia de la clase de búsqueda para el ejemplo
 
                 var resultado = busqueda1.busqueda(
                     new Solucion(solucionInicial, 0),
@@ -57,6 +57,13 @@ namespace Ejecutable
         { 
             return solucion.Coste + 1;
         }
+        
+        /// <summary>
+        /// Calcula la heurística de una solución en el problema de las N reinas.
+        /// La heurística se basa en contar el número de conflictos entre reinas en el tablero.
+        /// </summary>
+        /// <param name="solucion">La solución actual con las coordenadas de las reinas.</param>
+        /// <returns>El número de conflictos entre reinas en la solución dada.</returns>
 
         static int calculo_heuristica(Solucion solucion)
         {
@@ -77,7 +84,6 @@ namespace Ejecutable
                     }
                 }
             }
-
             return conflictos; // Devolvemos la cantidad de conflictos como heurística
         }
 
@@ -88,7 +94,6 @@ namespace Ejecutable
         /// <param name="solucion"> La solución actual, que contiene las coordenadas de las reinas colocadas hasta el momento. </param>
         /// <param name="reinas"> El numero total de reinas que deben ser colocadas. </param>
         /// <returns> Una lista de coordenadas (tuplas) posibles para la siguiente reina. </returns>
-   
         static List<(int, int)> obtener_vecinos(Solucion solucion, int reinas)
         {
             // Si la solución está vacía, comenzamos desde la fila -1
