@@ -14,10 +14,15 @@ namespace Ejecutable
         static void Main()
         {
             List<int> listaReinas = new List<int> {4, 5, 6, 7, 8, 9, 10}; // Diferentes cantidades de reinas a probar
+            List<(int, int)> reinas_prefijadas = new List<(int, int)> { (0, 3), (2, 4) };
+            reinas_prefijadas.Sort();
 
             foreach (int reinas in listaReinas)
             {
                 Console.WriteLine($"\nResolviendo para {reinas} reinas...");
+
+                // Se establece el estado inicial con las reinas prefijadas
+                Solucion nodo_inicial = new Solucion(reinas_prefijadas, 0);
 
                 ColaDePrioridad cola = new ColaDePrioridad();     // Estructura de datos para ejemplo
 
@@ -28,7 +33,7 @@ namespace Ejecutable
                 var resultado = busqueda1.busqueda(
                     new Solucion(solucionInicial, 0),
                     s => criterio_parada(s, reinas),
-                    s => obtener_vecinos(s, reinas),
+                    s => obtener_vecinos(s, reinas, reinas_prefijadas),
                     calculo_coste,
                     calculo_heuristica
                 );
@@ -175,22 +180,16 @@ namespace Ejecutable
         /// <param name="solucion">La solución actual con las reinas colocadas hasta el momento.</param>
         /// <param name="reinas">El número total de reinas a colocar.</param>
         /// <returns>Una lista de coordenadas (fila, columna) donde se puede colocar la siguiente reina sin generar conflictos.</returns>
-        static List<(int, int)> obtener_vecinos(Solucion solucion, int reinas)
+        static List<(int, int)> obtener_vecinos(Solucion solucion, int reinas, List<(int, int)> reinas_prefijadas)
         {
-            // Si la solución está vacía, comenzamos desde la fila -1
             int row = solucion.Coords.Count == 0 ? -1 : solucion.Coords.Last().Item1;
-
             List<(int, int)> vecinos = new List<(int, int)>();
 
-            // Si aún hay filas disponibles para colocar una reina
             if (row + 1 < reinas)
             {
-                // Generamos todas las posibles posiciones en la siguiente fila
                 for (int j = 0; j < reinas; j++)
                 {
-                    // Solo los que sean consistentes 
-                    if (es_consistente(solucion.Coords, row + 1, j))
-                    // Agregamos las posibles posiciones en la fila siguiente (row + 1)
+                    if (!reinas_prefijadas.Contains((row + 1, j)) && es_consistente(solucion.Coords, row + 1, j))
                         vecinos.Add((row + 1, j));
                 }
             }
