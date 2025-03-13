@@ -1,10 +1,8 @@
 /// Claudia Vidal Otero
 /// Aldana Smyna Medina Lostaunau
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using Estructuras;
-using Ejecutable;
+
 
 namespace Algoritmos
 {

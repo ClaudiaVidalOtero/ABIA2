@@ -1,12 +1,5 @@
 // Claudia Vidal Otero
 // Aldana Smyna Medina Lostaunau
-using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using Ejecutable;
-using Algoritmos;
-
 
 namespace Estructuras
 {
