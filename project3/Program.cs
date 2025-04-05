@@ -1,23 +1,52 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 class Estado
 {
-    public int[,] Tablero { get; private set; } // Usamos una matriz para representar el tablero
+    public int[,] Tablero { get; private set; }
+    public int Costo { get; private set; }
+    public int Heuristica { get; private set; }
+    public Estado Padre { get; private set; }
 
-    public Estado(int[,] tablero)
+    public Estado(int[,] tablero, int costo = 0, Estado padre = null)
     {
-        Tablero = (int[,])tablero.Clone(); // Clonamos el tablero para evitar efectos secundarios
+        Tablero = (int[,])tablero.Clone();
+        Costo = costo;
+        Padre = padre;
+        Heuristica = CalcularHeuristica();
     }
 
-    // Aplica una acción y devuelve el nuevo estado
+    private int CalcularHeuristica()
+    {
+        int heuristica = 0;
+        int[,] objetivoTablero = new int[,] {
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 0 }
+        };
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int valor = Tablero[i, j];
+                if (valor != 0)
+                {
+                    int objetivoX = (valor - 1) / 3;
+                    int objetivoY = (valor - 1) % 3;
+                    heuristica += Math.Abs(i - objetivoX) + Math.Abs(j - objetivoY);
+                }
+            }
+        }
+        return heuristica;
+    }
+
     public Estado AplicarAccion(Accion accion)
     {
-        // Encontrar la posición de la casilla vacía
         var (x, y) = ObtenerPosVacia();
-
-        // Realizar el movimiento según la acción
         int[,] nuevoTablero = (int[,])Tablero.Clone();
+
         switch (accion.Nombre)
         {
             case "MoverArriba":
@@ -27,7 +56,6 @@ class Estado
                     nuevoTablero[x - 1, y] = 0;
                 }
                 break;
-
             case "MoverAbajo":
                 if (x < 2)
                 {
@@ -35,7 +63,6 @@ class Estado
                     nuevoTablero[x + 1, y] = 0;
                 }
                 break;
-
             case "MoverIzquierda":
                 if (y > 0)
                 {
@@ -43,7 +70,6 @@ class Estado
                     nuevoTablero[x, y - 1] = 0;
                 }
                 break;
-
             case "MoverDerecha":
                 if (y < 2)
                 {
@@ -53,10 +79,9 @@ class Estado
                 break;
         }
 
-        return new Estado(nuevoTablero);
+        return new Estado(nuevoTablero, Costo + 1, this);
     }
 
-    // Verifica si el estado actual cumple con el objetivo (compara con la matriz objetivo)
     public bool Satisface(Estado objetivo)
     {
         for (int i = 0; i < 3; i++)
@@ -69,7 +94,6 @@ class Estado
         return true;
     }
 
-    // Mostrar el tablero de manera legible
     public void MostrarTablero()
     {
         for (int i = 0; i < 3; i++)
@@ -83,7 +107,6 @@ class Estado
         Console.WriteLine();
     }
 
-    // Función que encuentra la posición de la casilla vacía (0)
     public (int x, int y) ObtenerPosVacia()
     {
         for (int i = 0; i < 3; i++)
@@ -96,7 +119,12 @@ class Estado
                 }
             }
         }
-        return (-1, -1); // Si no se encuentra la casilla vacía (no debería pasar)
+        return (-1, -1);
+    }
+
+    public int CalcularCostoTotal()
+    {
+        return Costo + Heuristica;
     }
 }
 
@@ -122,7 +150,6 @@ class Planificador
 
     private void DefinirAcciones()
     {
-        // Definir las acciones, pero ahora trabajaremos directamente con las coordenadas del tablero.
         Acciones.Add(new Accion("MoverArriba"));
         Acciones.Add(new Accion("MoverAbajo"));
         Acciones.Add(new Accion("MoverIzquierda"));
@@ -131,32 +158,65 @@ class Planificador
 
     public List<string> EncontrarPlan(Estado inicial, Estado objetivo)
     {
-        Queue<(Estado, List<string>)> frontera = new Queue<(Estado, List<string>)>();
+        SortedSet<Estado> frontera = new SortedSet<Estado>(Comparer<Estado>.Create((a, b) =>
+        {
+            return a.CalcularCostoTotal().CompareTo(b.CalcularCostoTotal());
+        }));
         HashSet<Estado> visitados = new HashSet<Estado>();
-        
-        frontera.Enqueue((inicial, new List<string>()));
-        visitados.Add(inicial);
+
+        frontera.Add(inicial);
 
         while (frontera.Count > 0)
         {
-            (Estado estadoActual, List<string> planActual) = frontera.Dequeue();
-            
+            Estado estadoActual = frontera.Min;
+            frontera.Remove(estadoActual);
+
             if (estadoActual.Satisface(objetivo))
-                return planActual;
+            {
+                return ReconstruirCamino(estadoActual);
+            }
+
+            visitados.Add(estadoActual);
 
             foreach (Accion accion in Acciones)
             {
-                // Aplica la acción y obtiene el nuevo estado
                 Estado nuevoEstado = estadoActual.AplicarAccion(accion);
-                if (nuevoEstado != null && !visitados.Contains(nuevoEstado))
+
+                if (!visitados.Contains(nuevoEstado) && !frontera.Contains(nuevoEstado))
                 {
-                    List<string> nuevoPlan = new List<string>(planActual) { accion.Nombre };
-                    frontera.Enqueue((nuevoEstado, nuevoPlan));
-                    visitados.Add(nuevoEstado);
+                    frontera.Add(nuevoEstado);
                 }
             }
         }
-        return null; // No hay solución
+        return null;
+    }
+
+    private List<string> ReconstruirCamino(Estado estado)
+    {
+        List<string> plan = new List<string>();
+        while (estado.Padre != null)
+        {
+            // Aquí corregimos el error: no debemos pasar una acción vacía
+            string accion = ObtenerAccionDesdeEstados(estado.Padre, estado);
+            plan.Add(accion);
+            estado = estado.Padre;
+        }
+        plan.Reverse();
+        return plan;
+    }
+
+    // Esta función obtiene la acción realizada entre dos estados
+    private string ObtenerAccionDesdeEstados(Estado padre, Estado hijo)
+    {
+        var (x1, y1) = padre.ObtenerPosVacia();
+        var (x2, y2) = hijo.ObtenerPosVacia();
+
+        if (x1 > x2) return "MoverArriba";
+        if (x1 < x2) return "MoverAbajo";
+        if (y1 > y2) return "MoverIzquierda";
+        if (y1 < y2) return "MoverDerecha";
+        
+        return "";
     }
 }
 
@@ -164,16 +224,9 @@ class Program
 {
     static void Main()
     {
-        // Estado inicial del 8-Puzle (con el 0 representando la casilla vacía)
-        int[,] estadoInicialTablero = new int[,]
-        {
-            { 1, 8, 7 },
-            { 4, 0, 2 },
-            { 3, 6, 5 }
-        };
+        int[,] estadoInicialTablero = GenerarTableroAleatorio();
         Estado estadoInicial = new Estado(estadoInicialTablero);
 
-        // Estado objetivo del 8-Puzle
         int[,] estadoObjetivoTablero = new int[,]
         {
             { 1, 2, 3 },
@@ -182,14 +235,14 @@ class Program
         };
         Estado estadoObjetivo = new Estado(estadoObjetivoTablero);
 
+        Console.WriteLine("Estado inicial aleatorio:");
+        estadoInicial.MostrarTablero();
+
         Planificador planificador = new Planificador();
         List<string> plan = planificador.EncontrarPlan(estadoInicial, estadoObjetivo);
 
         if (plan != null)
         {
-            Console.WriteLine("Tablero inicial aleatorio:");
-            estadoInicial.MostrarTablero();
-
             Console.WriteLine("Plan encontrado:");
             foreach (string accion in plan)
             {
@@ -200,16 +253,33 @@ class Program
             foreach (string accion in plan)
             {
                 Console.WriteLine($"Ejecutando: {accion}");
-                // Aplicar la acción al estado
-                estadoInicial = estadoInicial.AplicarAccion(new Accion(accion));
                 estadoInicial.MostrarTablero();
-
+                estadoInicial = estadoInicial.AplicarAccion(new Accion(accion));
             }
-
         }
         else
         {
             Console.WriteLine("No se encontró solución.");
         }
+    }
+
+    static int[,] GenerarTableroAleatorio()
+    {
+        Random rand = new Random();
+        List<int> lista = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
+        lista = lista.OrderBy(x => rand.Next()).ToList();
+
+        int[,] tablero = new int[3, 3];
+        int index = 0;
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                tablero[i, j] = lista[index++];
+            }
+        }
+
+        return tablero;
     }
 }
