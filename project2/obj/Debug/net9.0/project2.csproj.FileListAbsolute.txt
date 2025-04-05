@@ -1,0 +1,14 @@
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\bin\Debug\net9.0\project2.exe
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\bin\Debug\net9.0\project2.deps.json
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\bin\Debug\net9.0\project2.runtimeconfig.json
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\bin\Debug\net9.0\project2.dll
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\bin\Debug\net9.0\project2.pdb
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\project2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\project2.AssemblyInfoInputs.cache
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\project2.AssemblyInfo.cs
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\project2.csproj.CoreCompileInputs.cache
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\project2.dll
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\refint\project2.dll
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\project2.pdb
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\project2.genruntimeconfig.cache
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\P2-ABIA2\project2\obj\Debug\net9.0\ref\project2.dll
