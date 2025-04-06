@@ -1,4 +1,4 @@
-// Claudia Vidal Otero (claudia.votero@gudc.es)
+// Claudia Vidal Otero (claudia.votero@udc.es)
 // Aldana Smyna Medina Lostaunau (aldana.medina@udc.es)
 // Grupo 2 (Jueves)
 
@@ -17,66 +17,79 @@ class Estado
         Heuristica = CalcularHeuristica();
     }
 
+    /// <summary>
+    /// Calcula la heurística utilizando la suma de distancias de Manhattan
+    /// entre cada ficha y su posición en el tablero objetivo.
+    /// </summary>
     private int CalcularHeuristica()
     {
-        int heuristica = 0;
-        // Tablero objetivo
-        int[,] objetivoTablero = new int[,] {
+        int heuristicaTotal = 0;
+
+        int[,] tableroObjetivo = new int[,] {
             { 1, 2, 3 },
             { 4, 5, 6 },
             { 7, 8, 0 }
         };
 
-        // Suma de distancias de Manhattan
-        for (int i = 0; i < 3; i++)
+        for (int filaActual = 0; filaActual < 3; filaActual++)
         {
-            for (int j = 0; j < 3; j++)
+            for (int columnaActual = 0; columnaActual < 3; columnaActual++)
             {
-                int valor = Tablero[i, j];
-                if (valor != 0)
+                int valorFicha = Tablero[filaActual, columnaActual];
+
+                if (valorFicha != 0) // No cuenta la casilla vacía
                 {
-                    int objetivoX = (valor - 1) / 3;
-                    int objetivoY = (valor - 1) % 3;
-                    heuristica += Math.Abs(i - objetivoX) + Math.Abs(j - objetivoY);
+                    int filaObjetivo = (valorFicha - 1) / 3;
+                    int columnaObjetivo = (valorFicha - 1) % 3;
+
+                    int distanciaManhattan = Math.Abs(filaActual - filaObjetivo) + Math.Abs(columnaActual - columnaObjetivo);
+                    heuristicaTotal += distanciaManhattan;
                 }
             }
         }
-        return heuristica;
+
+        return heuristicaTotal;
     }
 
+    /// <summary>
+    /// Devuelve un nuevo estado tras aplicar la acción de mover una ficha.
+    /// </summary>
     public Estado AplicarAccion(Accion accion)
     {
-        (int x, int y) = ObtenerPosVacia();
+        (int filaVacia, int columnaVacia) = ObtenerPosVacia();
         int[,] nuevoTablero = (int[,])Tablero.Clone();
 
         switch (accion.Nombre)
         {
             case "MoverArriba":
-                if (x > 0)
+                if (filaVacia > 0)
                 {
-                    nuevoTablero[x, y] = nuevoTablero[x - 1, y];
-                    nuevoTablero[x - 1, y] = 0;
+                    nuevoTablero[filaVacia, columnaVacia] = nuevoTablero[filaVacia - 1, columnaVacia];
+                    nuevoTablero[filaVacia - 1, columnaVacia] = 0;
                 }
                 break;
+
             case "MoverAbajo":
-                if (x < 2)
+                if (filaVacia < 2)
                 {
-                    nuevoTablero[x, y] = nuevoTablero[x + 1, y];
-                    nuevoTablero[x + 1, y] = 0;
+                    nuevoTablero[filaVacia, columnaVacia] = nuevoTablero[filaVacia + 1, columnaVacia];
+                    nuevoTablero[filaVacia + 1, columnaVacia] = 0;
                 }
                 break;
+
             case "MoverIzquierda":
-                if (y > 0)
+                if (columnaVacia > 0)
                 {
-                    nuevoTablero[x, y] = nuevoTablero[x, y - 1];
-                    nuevoTablero[x, y - 1] = 0;
+                    nuevoTablero[filaVacia, columnaVacia] = nuevoTablero[filaVacia, columnaVacia - 1];
+                    nuevoTablero[filaVacia, columnaVacia - 1] = 0;
                 }
                 break;
+
             case "MoverDerecha":
-                if (y < 2)
+                if (columnaVacia < 2)
                 {
-                    nuevoTablero[x, y] = nuevoTablero[x, y + 1];
-                    nuevoTablero[x, y + 1] = 0;
+                    nuevoTablero[filaVacia, columnaVacia] = nuevoTablero[filaVacia, columnaVacia + 1];
+                    nuevoTablero[filaVacia, columnaVacia + 1] = 0;
                 }
                 break;
         }
@@ -84,35 +97,53 @@ class Estado
         return new Estado(nuevoTablero, Costo + 1, this);
     }
 
+    /// <summary>
+    /// Verifica si el estado actual es igual al estado objetivo.
+    /// </summary>
     public bool Satisface(Estado objetivo)
     {
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                if (Tablero[i, j] != objetivo.Tablero[i, j])
+        for (int fila = 0; fila < 3; fila++)
+        {
+            for (int columna = 0; columna < 3; columna++)
+            {
+                if (Tablero[fila, columna] != objetivo.Tablero[fila, columna])
                     return false;
+            }
+        }
         return true;
     }
 
+    /// <summary>
+    /// Muestra el tablero en consola.
+    /// </summary>
     public void MostrarTablero()
     {
-        for (int i = 0; i < 3; i++)
+        for (int fila = 0; fila < 3; fila++)
         {
-            for (int j = 0; j < 3; j++)
+            for (int columna = 0; columna < 3; columna++)
             {
-                Console.Write(Tablero[i, j] == 0 ? "  " : Tablero[i, j] + " ");
+                Console.Write(Tablero[fila, columna] == 0 ? "   " : $"{Tablero[fila, columna]}  ");
             }
             Console.WriteLine();
         }
         Console.WriteLine();
     }
 
-    public (int x, int y) ObtenerPosVacia()
+    /// <summary>
+    /// Encuentra la posición de la casilla vacía (valor 0).
+    /// </summary>
+    public (int fila, int columna) ObtenerPosVacia()
     {
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                if (Tablero[i, j] == 0)
-                    return (i, j);
-        return (-1, -1);
+        for (int fila = 0; fila < 3; fila++)
+        {
+            for (int columna = 0; columna < 3; columna++)
+            {
+                if (Tablero[fila, columna] == 0)
+                    return (fila, columna);
+            }
+        }
+
+        return (-1, -1); // No encontrada
     }
 
     public int CalcularCostoTotal()
@@ -120,21 +151,23 @@ class Estado
         return Costo + Heuristica;
     }
 
-    // Convertir el tablero a string para comparar estados
     public override string ToString()
     {
-        string s = "";
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                s += Tablero[i, j] + ",";
-        return s;
+        string resultado = "";
+        for (int fila = 0; fila < 3; fila++)
+        {
+            for (int columna = 0; columna < 3; columna++)
+            {
+                resultado += Tablero[fila, columna] + ",";
+            }
+        }
+        return resultado;
     }
 
     public override bool Equals(object obj)
     {
-        if (obj is Estado otro)
-            return this.ToString() == otro.ToString();
+        if (obj is Estado otroEstado)
+            return this.ToString() == otroEstado.ToString();
         return false;
     }
-
 }

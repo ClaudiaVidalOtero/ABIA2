@@ -1,4 +1,4 @@
-// Claudia Vidal Otero (claudia.votero@gudc.es)
+// Claudia Vidal Otero (claudia.votero@udc.es)
 // Aldana Smyna Medina Lostaunau (aldana.medina@udc.es)
 // Grupo 2 (Jueves)
 

@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
+// Claudia Vidal Otero (claudia.votero@udc.es)
+// Aldana Smyna Medina Lostaunau (aldana.medina@udc.es)
+// Grupo 2 (Jueves)
 class Estado
 {
     public HashSet<string> Predicados { get; private set; }
@@ -63,12 +62,12 @@ class Estado
 
         // Obtener todas las bases actuales del estado (bloques sobre la mesa)
         List<string> bases = encimaDe
-            .Where(kv => kv.Value == "Mesa")
-            .Select(kv => kv.Key)
-            .OrderBy(b =>
+            .Where(claveValor => claveValor.Value == "Mesa")
+            .Select(claveValor => claveValor.Key)
+            .OrderBy(bloque =>
             {
-                int index = ordenDeseado.IndexOf(b);
-                return index >= 0 ? index : int.MaxValue;
+                int indice = ordenDeseado.IndexOf(bloque);
+                return indice >= 0 ? indice : int.MaxValue;
             })
             .ToList();
 
