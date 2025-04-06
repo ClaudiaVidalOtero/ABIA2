@@ -1,127 +1,102 @@
-// Claudia Vidal Otero (claudia.votero@udc.es)
-// Aldana Smyna Medina Lostaunau (aldana.medina@udc.es)
-// Grupo 2 (Jueves)
 
 /// <summary>
-/// Clase encargada de planificar una secuencia de acciones para resolver el 8-puzzle
-/// utilizando búsqueda informada (A*).
+/// Planificador que genera acciones y encuentra un plan usando búsqueda
 /// </summary>
 class Planificador
 {
-    /// <summary>
-    /// Lista de acciones disponibles (mover en las 4 direcciones).
-    /// </summary>
-    public List<Accion> Acciones { get; private set; }
-
-    /// <summary>
-    /// Constructor que inicializa las acciones posibles.
-    /// </summary>
-    public Planificador()
+    public List<Accion> GenerarAcciones(Estado estado)
     {
-        Acciones = new List<Accion>();
-        DefinirAcciones();
-    }
+        var acciones = new List<Accion>();
 
-    /// <summary>
-    /// Define las cuatro acciones básicas del 8-puzzle.
-    /// </summary>
-    private void DefinirAcciones()
-    {
-        Acciones.Add(new Accion("MoverArriba"));
-        Acciones.Add(new Accion("MoverAbajo"));
-        Acciones.Add(new Accion("MoverIzquierda"));
-        Acciones.Add(new Accion("MoverDerecha"));
-    }
+        // Buscar la posición vacía
+        var vacia = estado.Predicados.First(p => p.Nombre == "Vacia");
+        int fila = vacia.Argumentos[0];
+        int col = vacia.Argumentos[1];
 
-    /// <summary>
-    /// Encuentra un plan (lista de movimientos) desde un estado inicial hasta uno objetivo,
-    /// utilizando el algoritmo de búsqueda A*.
-    /// </summary>
-    /// <param name="inicial">Estado inicial del tablero</param>
-    /// <param name="objetivo">Estado objetivo deseado</param>
-    /// <returns>Lista de movimientos (como strings), o null si no hay solución</returns>
-    public List<string> EncontrarPlan(Estado inicial, Estado objetivo)
-    {
-        // Conjunto ordenado según costo f(n) = g(n) + h(n). Si hay empate, se usa ToString para evitar conflictos.
-        SortedSet<Estado> frontera = new SortedSet<Estado>(Comparer<Estado>.Create((estadoA, estadoB) =>
+        // Definir desplazamientos posibles
+        var direcciones = new (int df, int dc, string nombre)[]
         {
-            int comparacionCosto = estadoA.CalcularCostoTotal().CompareTo(estadoB.CalcularCostoTotal());
-            if (comparacionCosto == 0)
-                comparacionCosto = estadoA.ToString().CompareTo(estadoB.ToString());
-            return comparacionCosto;
-        }));
+            (-1, 0, "MoverAbajo"), // la ficha de arriba baja
+            (1, 0, "MoverArriba"), // la ficha de abajo sube
+            (0, -1, "MoverDerecha"),
+            (0, 1, "MoverIzquierda")
+        };
 
-        // Conjunto para guardar los estados ya visitados
-        HashSet<Estado> visitados = new HashSet<Estado>();
-
-        frontera.Add(inicial);
-
-        // Bucle principal de búsqueda
-        while (frontera.Count > 0)
+        foreach (var (df, dc, nombre) in direcciones)
         {
-            Estado estadoActual = frontera.Min;
-            frontera.Remove(estadoActual);
-
-            // Verificar si se ha alcanzado el estado objetivo
-            if (estadoActual.Satisface(objetivo))
+            int nf = fila + df;
+            int nc = col + dc;
+            if (nf >= 0 && nf < 3 && nc >= 0 && nc < 3)
             {
-                return ReconstruirCamino(estadoActual);
-            }
-
-            visitados.Add(estadoActual);
-
-            // Explorar vecinos del estado actual
-            foreach (Accion accion in Acciones)
-            {
-                Estado nuevoEstado = estadoActual.AplicarAccion(accion);
-
-                // Solo considerar estados no visitados y no presentes en la frontera
-                if (!visitados.Contains(nuevoEstado) && !frontera.Contains(nuevoEstado))
+                // Encontrar qué ficha está en (nf, nc)
+                var fichaEnPos = estado.Predicados.FirstOrDefault(p =>
+                    p.Nombre == "En" && p.Argumentos[1] == nf && p.Argumentos[2] == nc);
+                if (fichaEnPos != null)
                 {
-                    frontera.Add(nuevoEstado);
+                    int ficha = fichaEnPos.Argumentos[0];
+
+                    var precondiciones = new List<Predicado>
+                    {
+                        new Predicado("En", ficha, nf, nc),
+                        new Predicado("Vacia", fila, col)
+                    };
+
+                    var efectosEliminar = new List<Predicado>
+                    {
+                        new Predicado("En", ficha, nf, nc),
+                        new Predicado("Vacia", fila, col)
+                    };
+
+                    var efectosAgregar = new List<Predicado>
+                    {
+                        new Predicado("En", ficha, fila, col),
+                        new Predicado("Vacia", nf, nc)
+                    };
+
+                    acciones.Add(new Accion($"{nombre}({ficha})", precondiciones, efectosAgregar, efectosEliminar));
                 }
             }
         }
 
-        // Si no se encuentra solución, se retorna null
+        return acciones;
+    }
+
+    public List<Accion> EncontrarPlan(Estado inicial, Estado objetivo)
+    {
+        var frontera = new Queue<Estado>();
+        var visitados = new HashSet<Estado>();
+
+        frontera.Enqueue(inicial);
+
+        while (frontera.Count > 0)
+        {
+            var actual = frontera.Dequeue();
+
+            if (actual.Satisface(objetivo))
+                return ReconstruirPlan(actual);
+
+            visitados.Add(actual);
+
+            foreach (var accion in GenerarAcciones(actual))
+            {
+                var sucesor = actual.Aplicar(accion);
+                if (sucesor != null && !visitados.Contains(sucesor))
+                    frontera.Enqueue(sucesor);
+            }
+        }
+
         return null;
     }
 
-    /// <summary>
-    /// Reconstruye el camino desde el estado inicial hasta el actual, siguiendo los punteros al padre.
-    /// </summary>
-    /// <param name="estado">Estado final alcanzado</param>
-    /// <returns>Lista de acciones (como strings) desde el inicio hasta el objetivo</returns>
-    private List<string> ReconstruirCamino(Estado estado)
+    private List<Accion> ReconstruirPlan(Estado estado)
     {
-        List<string> plan = new List<string>();
-
+        var plan = new List<Accion>();
         while (estado.Padre != null)
         {
-            string accion = ObtenerAccionDesdeEstados(estado.Padre, estado);
-            plan.Add(accion);
+            plan.Add(estado.AccionAplicada);
             estado = estado.Padre;
         }
-
-        plan.Reverse(); // Invertir para obtener el orden correcto
+        plan.Reverse();
         return plan;
-    }
-    /// <summary>
-    /// Determina qué acción llevó desde un estado padre a su hijo.
-    /// </summary>
-    /// <param name="padre">Estado anterior</param>
-    /// <param name="hijo">Estado actual</param>
-    /// <returns>Nombre de la acción aplicada</returns>
-    private string ObtenerAccionDesdeEstados(Estado padre, Estado hijo)
-    {
-        (int filaPadre, int columnaPadre) = padre.ObtenerPosVacia();
-        (int filaHijo, int columnaHijo) = hijo.ObtenerPosVacia();
-
-        if (filaPadre > filaHijo) return "MoverArriba";
-        if (filaPadre < filaHijo) return "MoverAbajo";
-        if (columnaPadre > columnaHijo) return "MoverIzquierda";
-        if (columnaPadre < columnaHijo) return "MoverDerecha";
-
-        return ""; // Acción desconocida (no debería pasar)
     }
 }
