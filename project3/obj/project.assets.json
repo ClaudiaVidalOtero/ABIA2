@@ -8,24 +8,26 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\108057\\.nuget\\packages\\": {}
+    "C:\\Users\\celes\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\108057\\OneDrive - Universidade da Coruña\\FIC\\AÑO3\\CUATRI2\\ABIA2\\ABIA2\\project3\\project3.csproj",
+      "projectUniqueName": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project3\\project3.csproj",
       "projectName": "project3",
-      "projectPath": "C:\\Users\\108057\\OneDrive - Universidade da Coruña\\FIC\\AÑO3\\CUATRI2\\ABIA2\\ABIA2\\project3\\project3.csproj",
-      "packagesPath": "C:\\Users\\108057\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\108057\\OneDrive - Universidade da Coruña\\FIC\\AÑO3\\CUATRI2\\ABIA2\\ABIA2\\project3\\obj\\",
+      "projectPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project3\\project3.csproj",
+      "packagesPath": "C:\\Users\\celes\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\108057\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\celes\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -65,7 +67,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.104/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

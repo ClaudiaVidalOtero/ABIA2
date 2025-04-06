@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project2\\project2.csproj": {}
+    "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\ejercicio1\\project2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project2\\project2.csproj": {
+    "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\ejercicio1\\project2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project2\\project2.csproj",
+        "projectUniqueName": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\ejercicio1\\project2.csproj",
         "projectName": "project2",
-        "projectPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project2\\project2.csproj",
+        "projectPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\ejercicio1\\project2.csproj",
         "packagesPath": "C:\\Users\\celes\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project2\\obj\\",
+        "outputPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\ejercicio1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\celes\\AppData\\Roaming\\NuGet\\NuGet.Config",
