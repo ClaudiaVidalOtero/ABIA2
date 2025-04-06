@@ -59,7 +59,6 @@ class Estado
 
         return heuristicaTotal;
     }
-
     /// <summary>
     /// Aplica una acción (movimiento) sobre el estado actual y devuelve un nuevo estado resultante.
     /// </summary>

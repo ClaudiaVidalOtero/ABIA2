@@ -7,15 +7,8 @@
 /// </summary>
 class Accion
 {
-    /// <summary>
-    /// Nombre o descripción de la acción (ej: "MoverArriba", "MoverIzquierda").
-    /// </summary>
     public string Nombre { get; private set; }
 
-    /// <summary>
-    /// Constructor que inicializa una nueva acción con un nombre determinado.
-    /// </summary>
-    /// <param name="nombre">Nombre identificador de la acción.</param>
     public Accion(string nombre)
     {
         Nombre = nombre;

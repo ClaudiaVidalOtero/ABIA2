@@ -1,9 +1,17 @@
 ﻿// Claudia Vidal Otero (claudia.votero@udc.es)
 // Aldana Smyna Medina Lostaunau (aldana.medina@udc.es)
 // Grupo 2 (Jueves)
+
+/// <summary>
+/// Clase principal que ejecuta el sistema de planificación.
+/// Incluye lógica para configurar escenarios, generar acciones y ejecutar planes.
+/// </summary>
 class Program
 {
-    // Ejecuta el plan paso a paso, mostrando cada estado tras aplicar una acción
+    /// <summary>
+    /// Ejecuta el plan generado paso a paso y muestra el estado de bloques tras cada acción.
+    /// Se utiliza para visualizar cómo cambia el entorno tras aplicar cada acción.
+    /// </summary>
     static void EjecutarPlan(Estado estadoInicial, List<Accion> plan, Estado estadoObjetivo)
     {
         Console.WriteLine("\nPlan generado:");
@@ -14,21 +22,26 @@ class Program
 
         Console.WriteLine("\nEjecutando plan...\n");
 
+        // Obtener el orden visual de los bloques al inicio
         List<string> ordenInicial = estadoInicial.ObtenerOrdenDesdeEstado();
         Estado estadoActual = estadoInicial;
         estadoActual.ImprimirEstado(ordenInicial);
 
+        // Se ejecuta el plan paso a paso
         foreach (Accion accion in plan)
         {
             Console.WriteLine($"Ejecutando: {accion.Nombre}\n");
             estadoActual = estadoActual.AplicarAccion(accion);
-
+            // Visualizar el nuevo estado tras aplicar la acción
             List<string> ordenFinal = estadoObjetivo.ObtenerOrdenDesdeEstado();
             estadoActual.ImprimirEstado(ordenFinal);
         }
     }
 
-    // Genera todas las acciones posibles según los bloques que hay
+    /// <summary>
+    /// Genera todas las acciones posibles que se pueden aplicar al conjunto de bloques dado.
+    /// Incluye acciones de mover de bloque a bloque, de bloque a mesa y de mesa a bloque.
+    /// </summary>
     static List<Accion> GenerarAcciones(string[] bloques)
     {
         Planificador planificador = new Planificador();
@@ -43,7 +56,7 @@ class Program
                     {
                         if (bloque != destino && origen != destino)
                         {
-                            // Acción general: Mover bloque de un lugar a otro
+                            // Acción de mover un bloque (desde otro bloque o mesa) a un destino válido
                             Accion mover = new Accion(
                                 $"Mover({bloque},{origen},{destino})",
                                 new List<string> { $"Encima({bloque},{origen})", $"Libre({bloque})", $"Libre({destino})" },
@@ -56,7 +69,7 @@ class Program
 
                     if (origen != "Mesa")
                     {
-                        // Acción especial: Mover un bloque desde otro bloque hacia la mesa
+                        // Acción específica para mover desde un bloque a la mesa
                         Accion moverAMesa = new Accion(
                             $"MoverAMesa({bloque},{origen})",
                             new List<string> { $"Encima({bloque},{origen})", $"Libre({bloque})" },
@@ -72,7 +85,10 @@ class Program
         return planificador.Acciones;
     }
 
-    // Primer escenario simple de 3 bloques
+    /// <summary>
+    /// Escenario 1: Tres bloques (A, B, C) desordenados sobre la mesa.
+    /// Objetivo: apilarlos en el orden A sobre B sobre C.
+    /// </summary>
     static void Escenario1()
     {
         Estado estadoInicial = new Estado(new List<string>
@@ -83,7 +99,7 @@ class Program
 
         Estado estadoObjetivo = new Estado(new List<string>
         {
-            "Encima(B,A)", "Encima(C,B)", "Encima(A,Mesa)"
+            "Encima(A,B)", "Encima(B,C)", "Encima(C,Mesa)"
         });
 
         string[] bloques = new string[] { "A", "B", "C" };
@@ -107,7 +123,11 @@ class Program
         }
     }
 
-    // Segundo escenario más complejo
+    /// <summary>
+    /// Escenario 2: Seis bloques organizados en torres.
+    /// Objetivo: Reordenar las torres formando nuevas pilas en un orden específico.
+    /// Ejemplo más complejo que demuestra la escalabilidad del modelo STRIPS.
+    /// </summary>
     static void Escenario2()
     {
         Estado estadoInicial = new Estado(new List<string>
@@ -144,7 +164,9 @@ class Program
         }
     }
 
-    // Menú para escoger escenario
+    /// <summary>
+    /// Punto de entrada principal del programa. Permite elegir entre dos escenarios disponibles.
+    /// </summary>
     static void Main()
     {
         Console.WriteLine("Selecciona un escenario:");
