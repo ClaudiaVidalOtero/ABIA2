@@ -19,7 +19,7 @@ class Predicado
     public Predicado(string nombre, params int[] argumentos)
     {
         Nombre = nombre;
-        Argumentos = argumentos.ToList(); // Se convierte el array a lista para facilitar su uso
+        Argumentos = new List<int>(argumentos); // Se convierte el array a lista explícitamente
     }
 
     /// <summary>
@@ -53,4 +53,3 @@ class Predicado
         return $"{Nombre}({string.Join(",", Argumentos)})";
     }
 }
-

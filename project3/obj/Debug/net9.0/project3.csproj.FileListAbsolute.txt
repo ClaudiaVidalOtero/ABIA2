@@ -13,3 +13,18 @@ C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\project3\obj\Debug\ne
 C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\project3\obj\Debug\net9.0\project3.pdb
 C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\project3\obj\Debug\net9.0\project3.genruntimeconfig.cache
 C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\project3\obj\Debug\net9.0\ref\project3.dll
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\bin\Debug\net9.0\project3.exe
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\bin\Debug\net9.0\project3.deps.json
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\bin\Debug\net9.0\project3.runtimeconfig.json
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\bin\Debug\net9.0\project3.dll
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\bin\Debug\net9.0\project3.pdb
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\project3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\project3.AssemblyInfoInputs.cache
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\project3.AssemblyInfo.cs
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\project3.csproj.CoreCompileInputs.cache
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\project3.sourcelink.json
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\project3.dll
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\refint\project3.dll
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\project3.pdb
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\project3.genruntimeconfig.cache
+C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\project3\obj\Debug\net9.0\ref\project3.dll

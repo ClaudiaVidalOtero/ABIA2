@@ -16,15 +16,15 @@ class Planificador
     /// <returns>Una lista de acciones aplicables en ese estado</returns>
     public List<Accion> GenerarAcciones(Estado estado)
     {
-        var acciones = new List<Accion>();
+        List<Accion> acciones = new List<Accion>();
 
         // Buscar la posición de la casilla vacía en el estado actual
-        var vacia = estado.Predicados.First(p => p.Nombre == "Vacia");
+        Predicado vacia = estado.Predicados.First(p => p.Nombre == "Vacia");
         int fila = vacia.Argumentos[0];
         int col = vacia.Argumentos[1];
 
         // Definir posibles direcciones de movimiento de una ficha hacia la casilla vacía
-        var direcciones = new (int df, int dc, string nombre)[]
+        (int df, int dc, string nombre)[] direcciones = new (int, int, string)[]
         {
             (-1, 0, "MoverAbajo"),    // Mover la ficha de arriba hacia abajo
             (1, 0, "MoverArriba"),    // Mover la ficha de abajo hacia arriba
@@ -32,7 +32,7 @@ class Planificador
             (0, 1, "MoverIzquierda")  // Mover la ficha de la derecha hacia la izquierda
         };
 
-        foreach (var (df, dc, nombre) in direcciones)
+        foreach ((int df, int dc, string nombre) in direcciones)
         {
             int nf = fila + df;
             int nc = col + dc;
@@ -41,7 +41,7 @@ class Planificador
             if (nf >= 0 && nf < 3 && nc >= 0 && nc < 3)
             {
                 // Buscar si hay una ficha en la posición vecina (nf, nc)
-                var fichaEnPos = estado.Predicados.FirstOrDefault(p =>
+                Predicado fichaEnPos = estado.Predicados.FirstOrDefault(p =>
                     p.Nombre == "En" && p.Argumentos[1] == nf && p.Argumentos[2] == nc);
 
                 if (fichaEnPos != null)
@@ -49,21 +49,21 @@ class Planificador
                     int ficha = fichaEnPos.Argumentos[0];
 
                     // Definir las precondiciones para mover la ficha hacia la casilla vacía
-                    var precondiciones = new List<Predicado>
+                    List<Predicado> precondiciones = new List<Predicado>
                     {
                         new Predicado("En", ficha, nf, nc),
                         new Predicado("Vacia", fila, col)
                     };
 
                     // Definir los efectos que se eliminan al aplicar la acción
-                    var efectosEliminar = new List<Predicado>
+                    List<Predicado> efectosEliminar = new List<Predicado>
                     {
                         new Predicado("En", ficha, nf, nc),
                         new Predicado("Vacia", fila, col)
                     };
 
                     // Definir los efectos que se agregan al aplicar la acción
-                    var efectosAgregar = new List<Predicado>
+                    List<Predicado> efectosAgregar = new List<Predicado>
                     {
                         new Predicado("En", ficha, fila, col),
                         new Predicado("Vacia", nf, nc)
@@ -87,14 +87,14 @@ class Planificador
     /// <returns>Lista de acciones que constituyen el plan o null si no se encuentra</returns>
     public List<Accion> EncontrarPlan(Estado inicial, Estado objetivo)
     {
-        var frontera = new Queue<Estado>(); // Cola de estados por explorar
-        var visitados = new HashSet<Estado>(); // Conjunto de estados ya visitados
+        Queue<Estado> frontera = new Queue<Estado>(); // Cola de estados por explorar
+        HashSet<Estado> visitados = new HashSet<Estado>(); // Conjunto de estados ya visitados
 
         frontera.Enqueue(inicial);
 
         while (frontera.Count > 0)
         {
-            var actual = frontera.Dequeue();
+            Estado actual = frontera.Dequeue();
 
             // Si el estado actual cumple con el objetivo, se reconstruye el plan
             if (actual.Satisface(objetivo))
@@ -103,9 +103,9 @@ class Planificador
             visitados.Add(actual);
 
             // Generar y aplicar todas las acciones posibles desde el estado actual
-            foreach (var accion in GenerarAcciones(actual))
+            foreach (Accion accion in GenerarAcciones(actual))
             {
-                var sucesor = actual.Aplicar(accion);
+                Estado sucesor = actual.Aplicar(accion);
                 if (sucesor != null && !visitados.Contains(sucesor))
                     frontera.Enqueue(sucesor);
             }
@@ -122,7 +122,7 @@ class Planificador
     /// <returns>Lista de acciones en orden desde el estado inicial al objetivo</returns>
     private List<Accion> ReconstruirPlan(Estado estado)
     {
-        var plan = new List<Accion>();
+        List<Accion> plan = new List<Accion>();
 
         // Se recorre hacia atrás la secuencia de estados, acumulando acciones
         while (estado.Padre != null)

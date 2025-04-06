@@ -43,12 +43,12 @@ class Estado
             return null;
 
         // Clona los predicados actuales para crear el nuevo conjunto
-        var nuevosPredicados = new HashSet<Predicado>(Predicados);
+        HashSet<Predicado> nuevosPredicados = new HashSet<Predicado>(Predicados);
 
         // Aplica los efectos eliminando e insertando predicados según la acción
-        foreach (var p in accion.EfectosEliminar)
+        foreach (Predicado p in accion.EfectosEliminar)
             nuevosPredicados.Remove(p);
-        foreach (var p in accion.EfectosAgregar)
+        foreach (Predicado p in accion.EfectosAgregar)
             nuevosPredicados.Add(p);
 
         // Devuelve un nuevo estado con los predicados modificados
@@ -69,7 +69,7 @@ class Estado
     public override int GetHashCode()
     {
         int hash = 17;
-        foreach (var p in Predicados.OrderBy(p => p.ToString()))
+        foreach (Predicado p in Predicados.OrderBy(p => p.ToString()))
             hash = hash * 23 + p.GetHashCode();
         return hash;
     }
@@ -79,10 +79,10 @@ class Estado
     /// </summary>
     public void Mostrar()
     {
-        var tablero = new int[3, 3];
+        int[,] tablero = new int[3, 3];
 
         // Se llena el tablero según los predicados "En(ficha, fila, columna)"
-        foreach (var p in Predicados)
+        foreach (Predicado p in Predicados)
         {
             if (p.Nombre == "En")
             {
@@ -105,4 +105,3 @@ class Estado
         Console.WriteLine();
     }
 }
-
