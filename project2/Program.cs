@@ -1,6 +1,9 @@
-﻿class Program
+﻿// Claudia Vidal Otero (claudia.votero@gudc.es)
+// Aldana Smyna Medina Lostaunau (aldana.medina@udc.es)
+// Grupo 2 (Jueves)
+class Program
 {
-    static void EjecutarPlan(Estado estadoInicial, List<Accion> plan)
+    static void EjecutarPlan(Estado estadoInicial, List<Accion> plan, Estado objetivo)
     {
         Console.WriteLine("\nPlan generado:");
         foreach (Accion accion in plan)
@@ -8,15 +11,16 @@
             Console.WriteLine(accion.Nombre);
         }
         Console.WriteLine("\nEjecutando plan...\n");
-
+        List<string> ordenInicial = estadoInicial.ObtenerOrdenDesdeEstado();
         Estado estadoActual = estadoInicial;
-        estadoActual.ImprimirEstado();
+        estadoActual.ImprimirEstado(ordenInicial);
         
         foreach (Accion accion in plan)
         {
             Console.WriteLine($"Ejecutando: {accion.Nombre}\n");
             estadoActual = estadoActual.AplicarAccion(accion);
-            estadoActual.ImprimirEstado();
+            List<string> ordenFinal = objetivo.ObtenerOrdenDesdeEstado();
+            estadoActual.ImprimirEstado(ordenFinal);
         }
     }
 
@@ -49,7 +53,7 @@
                             planificador.AgregarAccion(new Accion(
                                 $"Mover({b},{x},{y})",
                                 new List<string> { $"Encima({b},{x})", $"Libre({b})", $"Libre({y})" },
-                                new List<string> { $"Encima({b},{y})", $"Libre(x)" },
+                                new List<string> { $"Encima({b},{y})", $"Libre({x})" },
                                 new List<string> { $"Encima({b},{x})", $"Libre({y})" }
                             ));
                         }
@@ -72,7 +76,7 @@
         
         if (plan != null)
         {
-            EjecutarPlan(estadoInicial, plan);
+            EjecutarPlan(estadoInicial, plan, objetivo);
         }
         else
         {

@@ -1,3 +1,6 @@
+// Claudia Vidal Otero (claudia.votero@gudc.es)
+// Aldana Smyna Medina Lostaunau (aldana.medina@udc.es)
+// Grupo 2 (Jueves)
 class Planificador
 {
     public List<Accion> Acciones { get; private set; }
@@ -18,7 +21,7 @@ class Planificador
         frontera.Enqueue((estadoInicial, new List<Accion>()));
 
         HashSet<string> visitados = new HashSet<string>();
-        visitados.Add(string.Join(",", estadoInicial.Predicados.OrderBy(p => p)));
+        visitados.Add(string.Join(",", estadoInicial.Predicados));
 
         while (frontera.Count > 0)
         {
@@ -34,7 +37,7 @@ class Planificador
                 Estado nuevoEstado = estadoActual.AplicarAccion(accion);
                 if (nuevoEstado != null)
                 {
-                    string estadoClave = string.Join(",", nuevoEstado.Predicados.OrderBy(p => p));
+                    string estadoClave = string.Join(",", nuevoEstado.Predicados);
                     if (!visitados.Contains(estadoClave))
                     {
                         List<Accion> nuevoPlan = new List<Accion>(plan) { accion };

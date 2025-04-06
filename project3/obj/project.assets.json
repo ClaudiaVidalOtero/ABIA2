@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project3\\project2.csproj",
-      "projectName": "project2",
-      "projectPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project3\\project2.csproj",
+      "projectUniqueName": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project3\\project3.csproj",
+      "projectName": "project3",
+      "projectPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project3\\project3.csproj",
       "packagesPath": "C:\\Users\\celes\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\celes\\Downloads\\FIC\\3CURSO\\6Q\\ABIA\\N-REINAS\\ABIA2\\project3\\obj\\",
       "projectStyle": "PackageReference",
