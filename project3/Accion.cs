@@ -1,5 +1,12 @@
+// Claudia Vidal Otero (claudia.votero@udc.es)
+// Aldana Smyna Medina Lostaunau (aldana.medina@udc.es)
+// Grupo 2 (Jueves)
+
 /// <summary>
-/// Representa una acción STRIPS con nombre, precondiciones y efectos
+/// Representa una acción del sistema de planificación STRIPS.
+/// Cada acción tiene un nombre, un conjunto de precondiciones que deben cumplirse
+/// para que pueda aplicarse, y dos conjuntos de efectos: los predicados que se agregan
+/// y los que se eliminan al aplicar la acción.
 /// </summary>
 class Accion
 {
@@ -18,4 +25,3 @@ class Accion
 
     public override string ToString() => Nombre;
 }
-
