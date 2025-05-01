@@ -13,3 +13,18 @@ C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2
 C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\P3\obj\Debug\net9.0\P3.pdb
 C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\P3\obj\Debug\net9.0\P3.genruntimeconfig.cache
 C:\Users\108057\OneDrive - Universidade da Coruña\FIC\AÑO3\CUATRI2\ABIA2\ABIA2\P3\obj\Debug\net9.0\ref\P3.dll
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\bin\Debug\net9.0\P3.exe
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\bin\Debug\net9.0\P3.deps.json
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\bin\Debug\net9.0\P3.runtimeconfig.json
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\bin\Debug\net9.0\P3.dll
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\bin\Debug\net9.0\P3.pdb
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\P3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\P3.AssemblyInfoInputs.cache
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\P3.AssemblyInfo.cs
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\P3.csproj.CoreCompileInputs.cache
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\P3.sourcelink.json
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\P3.dll
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\refint\P3.dll
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\P3.pdb
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\P3.genruntimeconfig.cache
+C:\Users\celes\Downloads\FIC\3CURSO\6Q\ABIA\N-REINAS\ABIA2\P3\obj\Debug\net9.0\ref\P3.dll
